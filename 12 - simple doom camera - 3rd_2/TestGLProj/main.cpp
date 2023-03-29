@@ -41,7 +41,7 @@ glm::mat4 LeftLeg;
 glm::mat4 RightLeg;
 glm::mat4 garagemat;
 vec4 lookatdirection = vec4(-1, 0, 0,0);
-vec4 up = glm::vec4(0.0f, 0.0f, 1.0f,0.0f);
+vec4 up = glm::vec4(0.0f, 0.0f, -1.0f,0.0f);
 float cameradistance = 10;
 float cameraheight = 10;
 float angle1 = 0.0f;
@@ -108,7 +108,7 @@ void display(void)
 	
 	
 	if (toggleFirstPerson) {
-		view = glm::lookAt(vec3(move - (rotate(rotation, 0.f, 0.f, 1.f) * lookatdirection * cameradistance) + glm::vec4(0.0f, 0.f, cameraheight, 0.f)), vec3(move), vec3(up));
+		view = glm::lookAt(vec3(move - (rotate(rotation, 0.f, 0.f, 1.f) * lookatdirection * cameradistance) + glm::vec4(0.0f, 0.f, -cameraheight, 0.f)), vec3(move), vec3(up));
 		model = translate(vec3(move)) * rotate(rotation, 0.f, 1.f, 0.f)*rotate(rotation,1.f,0.f,0.f);
 		cylinder->renderPlane(view * model, projection);
 	}
@@ -196,7 +196,7 @@ void keyboard(unsigned char key, int x, int y)
 			move += lookatdir;
 		}
 		else {
-			rotation += 90;
+			rotation -= 90;
 		}
 		break;
 	case 's':
@@ -214,7 +214,7 @@ void keyboard(unsigned char key, int x, int y)
 			move += lookatdir;
 		}
 		else {
-			rotation -= 90;
+			rotation += 90;
 		}
 		break;
 	case 'c':
