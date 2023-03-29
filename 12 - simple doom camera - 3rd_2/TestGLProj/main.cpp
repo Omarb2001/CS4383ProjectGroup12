@@ -109,12 +109,12 @@ void display(void)
 	
 	if (toggleFirstPerson) {
 		view = glm::lookAt(vec3(move - (rotate(rotation, 0.f, 0.f, 1.f) * lookatdirection * cameradistance) + glm::vec4(0.0f, 0.f, cameraheight, 0.f)), vec3(move), vec3(up));
-		model = translate(vec3(move)) * rotate(rotation, 0.f, 1.f, 0.f);//*rotate(rotation,0.f,1.f,0.f);
+		model = translate(vec3(move)) * rotate(rotation, 0.f, 1.f, 0.f)*rotate(rotation,1.f,0.f,0.f);
 		cylinder->renderPlane(view * model, projection);
 	}
 	else {
-		view = glm::lookAt(vec3(0.f,0.f,60.f), vec3(0.f,0.f,0.f), vec3(0.f,1.f,0.f));
-		model = translate(vec3(move));// *rotate(rotation, 0.f, 1.f, 0.f);
+		view = glm::lookAt(vec3(0.f,0.f,-60.f), vec3(0.f,0.f,0.f), vec3(0.f,1.f,0.f));
+		model = translate(vec3(move))*rotate(rotation, 0.f, 0.f, 1.f);
 		cylinder->renderPlane(view * model, projection);
 	}
 
@@ -192,7 +192,7 @@ void keyboard(unsigned char key, int x, int y)
 	case 'a':
 		// turn left
 		if (!toggleFirstPerson) {
-			rotation = 0.f;
+			rotation = 180.f;
 			move += lookatdir;
 		}
 		else {
@@ -210,7 +210,7 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 	case 'd':
 		if (!toggleFirstPerson) {
-			rotation = 180.f;
+			rotation = 0.f;
 			move += lookatdir;
 		}
 		else {
