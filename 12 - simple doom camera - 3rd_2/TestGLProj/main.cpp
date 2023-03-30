@@ -258,7 +258,6 @@ int main(int argc, char** argv)
 	//cube = new Model(&shader, "models/unitcube.obj", "models/");
 
 	rotation = -90.f;
-
 	glutMainLoop();
 
 	return 0;
