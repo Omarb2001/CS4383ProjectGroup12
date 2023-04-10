@@ -55,5 +55,8 @@
     <None Include="shaders\phong.vert">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="shaders\blue.frag" />
+    <None Include="shaders\red.frag" />
+    <None Include="shaders\yellow.frag" />
   </ItemGroup>
 </Project>
