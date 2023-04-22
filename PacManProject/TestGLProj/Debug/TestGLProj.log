@@ -1,14 +1,7 @@
 ﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
   main.cpp
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\include\glm\gtx\string_cast.inl(30,4): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\main.cpp(216,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\main.cpp(228,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\main.cpp(250,20): warning C4018: '<': signed/unsigned mismatch
-  Model.cpp
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\Model.cpp(8,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\Model.cpp(61,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\Model.cpp(78,20): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  LINK : C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\Debug\TestGLProj.exe not found or not built by the last incremental link; performing full link
-Intersection.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
-  TestGLProj.vcxproj -> C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\Debug\TestGLProj.exe
+C:\Users\badra\Desktop\uni\Spring 2023\CS4383 Computer Graphics\final project\CS4383ProjectGroup12\PacManProject\include\glm\gtx\string_cast.inl(30,4): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\badra\Desktop\uni\Spring 2023\CS4383 Computer Graphics\final project\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(218,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\badra\Desktop\uni\Spring 2023\CS4383 Computer Graphics\final project\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(230,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\badra\Desktop\uni\Spring 2023\CS4383 Computer Graphics\final project\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(252,20): warning C4018: '<': signed/unsigned mismatch
+  TestGLProj.vcxproj -> C:\Users\badra\Desktop\uni\Spring 2023\CS4383 Computer Graphics\final project\CS4383ProjectGroup12\PacManProject\Debug\TestGLProj.exe
