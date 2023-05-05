@@ -48,7 +48,6 @@ glm::mat4 model; // where the model (i.e., the myModel) is located wrt the camer
 
 float OBJ_DEPTH = -20.0f;
 float PAC_MAN_SPEED = 0.1f;
-float SLOW_GHOSTS = 0.05f;;
 
 vec3 mazePos = vec3(0.0f, 0.0f, OBJ_DEPTH);
 
@@ -70,16 +69,6 @@ float pacManRot = 0.0f;
 std::string pacManCurDir = "left";
 std::string pacManNextDir = "left";
 
-// ghost1
-float ghost1XPos = 11.3403f;
-float ghost1YPos = 10.1f;
-float ghost1XSpeed = -PAC_MAN_SPEED;
-float ghost1YSpeed = 0.0f;
-float ghost1Rot = 0.0f;
-std::string ghost1CurDir = "left";
-std::string ghost1NextDir = "left";
-std::string correctedTurn = "";
-
 // intersections
 std::vector<Intersection> intersections;
 
@@ -94,8 +83,6 @@ vec4 newPacManForward;
 vec4 newPacManRight;
 vec4 toOriginVector;
 int score = 0;
-int gameOverInt = 0;
-int currentDist = 0;
 int isFrozen = 0;
 int ThreeD;
 
@@ -177,38 +164,9 @@ void turnCharacter(std::string character) {
 			pacManRot = 90;
 		}
 	}
-	//ghost turning code here
-	else if (character == "ghost") {
-		if (ghost1CurDir == ghost1NextDir) {
-			ghost1XPos += ghost1XSpeed;
-			ghost1YPos += ghost1YSpeed;
-		}
-		else if (ghost1NextDir == "left") {
-			ghost1XSpeed = -PAC_MAN_SPEED;
-			ghost1YSpeed = 0.0f;
-			ghost1CurDir = ghost1NextDir;
-			ghost1Rot = 0;
-		}
-		else if (ghost1NextDir == "right") {
-			ghost1XSpeed = PAC_MAN_SPEED;
-			ghost1YSpeed = 0.0f;
-			ghost1CurDir = ghost1NextDir;
-			ghost1Rot = 180;
-		}
-		else if (ghost1NextDir == "up") {
-			ghost1XSpeed = 0.0f;
-			ghost1YSpeed = PAC_MAN_SPEED;
-			ghost1CurDir = ghost1NextDir;
-			ghost1Rot = -90;
-		}
-		else if (ghost1NextDir == "down") {
-			ghost1XSpeed = 0.0f;
-			ghost1YSpeed = -PAC_MAN_SPEED;
-			ghost1CurDir = ghost1NextDir;
-			ghost1Rot = 90;
-		}
-		
-	}
+	/*else if () {
+						// add ghost turning code here
+	}*/
 }
 
 void adjustCharacter(std::string character, Intersection intersection) {
@@ -240,35 +198,9 @@ void adjustCharacter(std::string character, Intersection intersection) {
 
 		}
 	}
-	//ghost adjusting code here
-	else if (character == "ghost"){
-		ghost1XPos = intersection.position.x;
-		ghost1YPos = intersection.position.y;
-		if (ghost1NextDir == "up") {
-			ghost1XSpeed = 0.0f;
-			ghost1YSpeed = PAC_MAN_SPEED;
-			ghost1YPos += ghost1YSpeed;
-
-		}
-		else if (ghost1NextDir == "down") {
-			ghost1XSpeed = 0.0f;
-			ghost1YSpeed = -PAC_MAN_SPEED;
-			ghost1YPos -= ghost1YSpeed;
-
-		}
-		else if (ghost1NextDir == "left") {
-			ghost1XSpeed = -PAC_MAN_SPEED;
-			ghost1YSpeed = 0.0f;
-			ghost1XPos -= ghost1XSpeed;
-
-		}
-		else if (ghost1NextDir == "right") {
-			ghost1XSpeed = PAC_MAN_SPEED;
-			ghost1YSpeed = 0.0f;
-			ghost1XPos += ghost1XSpeed;
-
-		}
-	}
+	//else if () {
+						// add ghost adjusting code here
+	//}
 }
 
 void freezeCharacter(std::string character) {
@@ -277,12 +209,9 @@ void freezeCharacter(std::string character) {
 		pacManYSpeed = 0.0f;
 		isFrozen = 1;
 	}
-	//ghost freezing code here
-	else if (character == "ghost") {
-		ghost1XSpeed = 0.0f;
-		ghost1YSpeed = 0.0f;
-		isFrozen = 1;
-	}
+	//else if () {
+						// add ghost freezing code here
+	//}
 }
 
 bool contains(std::vector<std::string> dirs, std::string tgt) {
@@ -329,64 +258,6 @@ void detectPellets(std::string character, float objXPos, float objYPos, std::str
 	}
 }
 
-//Check if game over
-void gameOver1(std::string character, std::string character1, float objXPos, float objYPos, float obj1XPos, float obj1YPos) {
-	vec3 objPos = vec3(objXPos, objYPos, OBJ_DEPTH);
-	vec3 obj1Pos = vec3(obj1XPos, obj1YPos, OBJ_DEPTH);
-	
-	float enemy1_dist = glm::distance(objPos, obj1Pos);
-	//check if close enough to ghost1
-	if (enemy1_dist < 2.0f) {
-		gameOverInt++;
-	}
-	//update on current dist a ghost is from pacman on map
-	//if (enemy1_dist > farthestDist) {
-		currentDist = enemy1_dist;
-	//}
-}
-
-void ghost1AI(std::string character, std::string character1, float objXPos, float objYPos, float obj1XPos, float obj1YPos, std::string objCurDir, std::string objNextDir) {
-	vec3 objPos = vec3(objXPos, objYPos, OBJ_DEPTH);
-	vec3 obj1Pos = vec3(obj1XPos, obj1YPos, OBJ_DEPTH);
-	for (int i = 0; i < intersections.size(); i++) {
-		Intersection curIntersection = intersections[i];
-		float turn1_dist = glm::distance(obj1Pos, curIntersection.position);
-		if (turn1_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
-			std::vector<std::string> curDirs = curIntersection.directions;
-			if (contains(curDirs, objNextDir)) {
-				
-				adjustCharacter(character1, curIntersection);
-				turnCharacter(character1);
-				isFrozen = 0;
-				
-				int possibleTurns = curDirs.size();
-
-
-				srand((unsigned)time(0));
-				int index;
-				index = (rand() % possibleTurns);
-				ghost1NextDir = curDirs[index];
-				
-			}
-			else {
-				// if we try to turn into a wall, the character should not be translated
-				freezeCharacter(character1);
-				int possibleTurns = curDirs.size();
-				
-				
-				srand((unsigned)time(0));
-				int index;
-				index = (rand() % possibleTurns);
-				
-				ghost1NextDir = curDirs[index];
-				
-				break;
-			}
-		}
-	}
-}
-
-
 /*This gets called when the OpenGL is asked to display. This is where all the main rendering calls go*/
 void display(void)
 {
@@ -407,12 +278,8 @@ void display(void)
 
 		detectPellets("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
 		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
-		gameOver1("pacman", "ghost", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
-		ghost1AI("pacman", "ghost", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos, ghost1CurDir, ghost1NextDir);
-
 
 		pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection, 4);
-		pacMan->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection, 4);
 
 		maze0->render(view * translate(mazePos), projection, 1);
 
@@ -430,8 +297,6 @@ void display(void)
 
 		pacManXPos += pacManXSpeed;
 		pacManYPos += pacManYSpeed;
-		ghost1XPos += ghost1XSpeed;
-		ghost1YPos += ghost1YSpeed;
 	}
 	else {
 		view = lookAt(vec3(vec4(pacManXPos, pacManYPos, OBJ_DEPTH,0) - (rotate(pacManRot, 0.f, 0.f, 1.f) *
@@ -439,12 +304,8 @@ void display(void)
 
 		detectPellets("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
 		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
-		gameOver1("pacman", "ghost", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
-		ghost1AI("pacman", "ghost", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos, ghost1CurDir, ghost1NextDir);
-
 
 		pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection, 4);
-		pacMan->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection, 4);
 
 		maze0->render(view * translate(mazePos), projection, 1);
 
@@ -462,8 +323,6 @@ void display(void)
 
 		pacManXPos += pacManXSpeed;
 		pacManYPos += pacManYSpeed;
-		ghost1XPos += ghost1XSpeed;
-		ghost1YPos += ghost1YSpeed;
 	}
 
 	glColor3f(0.0, 1.0, 0.0);
@@ -471,7 +330,7 @@ void display(void)
 
 	stringstream strs;
 	strs << score;
-	std::string temp = strs.str();
+	string temp = strs.str();
 	char* scr_temp = (char*)temp.c_str();
 	char* string = "SCORE: ";
 	int i = 3;
@@ -490,36 +349,6 @@ void display(void)
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
 	}
 
-	//check if ghost touches pacman
-	glColor3f(0.0, 1.0, 0.0);
-	glRasterPos2f(0.7f, 0.9f);
-	stringstream strs1;
-	strs1 << gameOverInt;
-	temp = strs1.str();
-	scr_temp = (char*)temp.c_str();
-	string = "game over: ";
-	i = 5;
-	for (c = string; *c != '\0'; c++) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-	}
-	for (c = scr_temp; *c != '\0'; c++) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-	}
-	//current dist ghost is from pacman
-	glColor3f(0.0, 1.0, 0.0);
-	glRasterPos2f(0.7f, 0.85f);
-	stringstream strs2;
-	strs2 << currentDist;
-	temp = strs2.str();
-	scr_temp = (char*)temp.c_str();
-	string = "current Dist: ";
-	i = 5;
-	for (c = string; *c != '\0'; c++) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-	}
-	for (c = scr_temp; *c != '\0'; c++) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-	}
 	glutSwapBuffers(); // Swap the buffers.
 	checkError("display");
 }
