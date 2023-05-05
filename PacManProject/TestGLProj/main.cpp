@@ -782,30 +782,54 @@ void display(void)
 		detectPellets("pacman", pacManXPos, pacManYPos);
 		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
 		gameOver("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
+		gameOver("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos);
+		gameOver("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos);
+		gameOver("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos);
 		ghostAI("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos, ghost1CurDir, ghost1NextDir);
+		ghostAI("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos, ghost2CurDir, ghost2NextDir);
+		ghostAI("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos, ghost3CurDir, ghost3NextDir);
+		ghostAI("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos, ghost4CurDir, ghost4NextDir);
 
 
 		pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection, 4);
-		pacMan->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection, 4);
+		pacMan->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection, 2);
+		pacMan->render(view * translate(vec3(ghost2XPos, ghost2YPos, OBJ_DEPTH)) * rotate(ghost2Rot, 0.0f, 0.0f, 1.0f), projection, 2);
+		pacMan->render(view * translate(vec3(ghost3XPos, ghost3YPos, OBJ_DEPTH)) * rotate(ghost3Rot, 0.0f, 0.0f, 1.0f), projection, 2);
+		pacMan->render(view * translate(vec3(ghost4XPos, ghost4YPos, OBJ_DEPTH)) * rotate(ghost4Rot, 0.0f, 0.0f, 1.0f), projection, 2);
 
 		maze0->render(view * translate(mazePos), projection, 1);
 
-		sphere1->render(view * translate(pelletLoc3[1]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere2->render(view * translate(pelletLoc3[2]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere3->render(view * translate(pelletLoc3[3]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+		if (renderPellets[1] == 0)
+			sphere1->render(view * translate(pelletLoc3[1]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+		if (renderPellets[2] == 0)
+			sphere2->render(view * translate(pelletLoc3[2]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+		if (renderPellets[3] == 0)
+			sphere3->render(view * translate(pelletLoc3[3]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
 
+		if (renderPellets[4] == 0)
 		sphere4->render(view * translate(pelletLoc3[4]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere5->render(view * translate(pelletLoc3[5]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere6->render(view * translate(pelletLoc3[6]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+		if (renderPellets[5] == 0)
+			sphere5->render(view * translate(pelletLoc3[5]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+		if (renderPellets[6] == 0)
+			sphere6->render(view * translate(pelletLoc3[6]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
 
-		sphere7->render(view * translate(pelletLoc3[7]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere8->render(view * translate(pelletLoc3[8]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere9->render(view * translate(pelletLoc3[9]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+		if (renderPellets[7] == 0)
+			sphere7->render(view * translate(pelletLoc3[7]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+		if (renderPellets[8] == 0)
+			sphere8->render(view * translate(pelletLoc3[8]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+		if (renderPellets[9] == 0)
+			sphere9->render(view * translate(pelletLoc3[9]) * scale(0.5f, 0.5f, 0.5f), projection, 2);
 
 		pacManXPos += pacManXSpeed;
 		pacManYPos += pacManYSpeed;
 		ghost1XPos += ghost1XSpeed;
 		ghost1YPos += ghost1YSpeed;
+		ghost2XPos += ghost2XSpeed;
+		ghost2YPos += ghost2YSpeed;
+		ghost3XPos += ghost3XSpeed;
+		ghost3YPos += ghost3YSpeed;
+		ghost4XPos += ghost4XSpeed;
+		ghost4YPos += ghost4YSpeed;
 	}
 
 	glColor3f(0.0, 1.0, 0.0);
