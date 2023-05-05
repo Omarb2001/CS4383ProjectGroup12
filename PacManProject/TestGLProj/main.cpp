@@ -56,7 +56,6 @@ vec4 center(0.0f, 0.0f, -15.0f, 1.0f);
 vec4 eye; // camera position
 vec4 cameraForward = vec4(0, 0, -1.0f, 0);
 vec4 cameraUp = vec4(0, 1.0f, 0, 0);
-vec4 cameraUpThreeD = vec4(0, 0, 1.0f, 0);
 float cameraDistance = 38;
 float cameraHeight = 5;
 
@@ -84,7 +83,6 @@ vec4 newPacManRight;
 vec4 toOriginVector;
 int score = 0;
 int isFrozen = 0;
-int ThreeD;
 
 
 /* report GL errors, if any, to stderr */
@@ -143,25 +141,25 @@ void turnCharacter(std::string character) {
 			pacManXSpeed = -PAC_MAN_SPEED;
 			pacManYSpeed = 0.0f;
 			pacManCurDir = pacManNextDir;
-			pacManRot = 0;
+			// pacManRot = ;
 		}
 		else if (pacManNextDir == "right") {
 			pacManXSpeed = PAC_MAN_SPEED;
 			pacManYSpeed = 0.0f;
 			pacManCurDir = pacManNextDir;
-			pacManRot = 180;
+			// pacManRot = ;
 		}
 		else if (pacManNextDir == "up") {
 			pacManXSpeed = 0.0f;
 			pacManYSpeed = PAC_MAN_SPEED;
 			pacManCurDir = pacManNextDir;
-			pacManRot = -90;
+			// pacManRot = ;
 		}
 		else if (pacManNextDir == "down") {
 			pacManXSpeed = 0.0f;
 			pacManYSpeed = -PAC_MAN_SPEED;
 			pacManCurDir = pacManNextDir;
-			pacManRot = 90;
+			// pacManRot = ;
 		}
 	}
 	/*else if () {
@@ -266,64 +264,33 @@ void display(void)
 	// TODO: render differently based on game states
 
 	// TODO: add different cameras
-	
+	eye = center - cameraDistance * cameraForward;
+	view = lookAt(vec3(eye), vec3(center), vec3(cameraUp));
 
 	// TODO: detect collisions with pellets
 	// TODO: detect collisions with ghosts
 
-	if (!ThreeD) {
+	detectPellets("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
+	detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
 
-		eye = center - cameraDistance * cameraForward;
-		view = lookAt(vec3(eye), vec3(center), vec3(cameraUp));
+	pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection, 4);
 
-		detectPellets("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
-		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
+	maze0->render(view * translate(mazePos), projection, 1);
 
-		pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection, 4);
+	sphere1->render(view * translate(-11.3403f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+	sphere2->render(view * translate(0.0f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+	sphere3->render(view * translate(11.3403f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
 
-		maze0->render(view * translate(mazePos), projection, 1);
+	sphere4->render(view * translate(-11.3403f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+	sphere5->render(view * translate(0.0f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+	sphere6->render(view * translate(11.3403f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
 
-		sphere1->render(view * translate(-11.3403f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere2->render(view * translate(0.0f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere3->render(view * translate(11.3403f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+	sphere7->render(view * translate(-11.3403f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+	sphere8->render(view * translate(0.0f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
+	sphere9->render(view * translate(11.3403f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
 
-		sphere4->render(view * translate(-11.3403f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere5->render(view * translate(0.0f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere6->render(view * translate(11.3403f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-
-		sphere7->render(view * translate(-11.3403f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere8->render(view * translate(0.0f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere9->render(view * translate(11.3403f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-
-		pacManXPos += pacManXSpeed;
-		pacManYPos += pacManYSpeed;
-	}
-	else {
-		view = lookAt(vec3(vec4(pacManXPos, pacManYPos, OBJ_DEPTH,0) - (rotate(pacManRot, 0.f, 0.f, 1.f) *
-			vec4(-1, 0, 0, 0) * 10) + glm::vec4(0.0f, 0.f, 10, 0.f)), vec3(pacManXPos, pacManYPos, OBJ_DEPTH), vec3(cameraUpThreeD));
-
-		detectPellets("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
-		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
-
-		pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection, 4);
-
-		maze0->render(view * translate(mazePos), projection, 1);
-
-		sphere1->render(view * translate(-11.3403f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere2->render(view * translate(0.0f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere3->render(view * translate(11.3403f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-
-		sphere4->render(view * translate(-11.3403f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere5->render(view * translate(0.0f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere6->render(view * translate(11.3403f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-
-		sphere7->render(view * translate(-11.3403f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere8->render(view * translate(0.0f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-		sphere9->render(view * translate(11.3403f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection, 2);
-
-		pacManXPos += pacManXSpeed;
-		pacManYPos += pacManYSpeed;
-	}
+	pacManXPos += pacManXSpeed;
+	pacManYPos += pacManYSpeed;
 
 	glColor3f(0.0, 1.0, 0.0);
 	glRasterPos2f(-0.97f, 0.9f);
@@ -374,95 +341,30 @@ void keyboard(unsigned char key, int x, int y)
 		exit(0);
 		break;
 	case 'w':
-		if (!ThreeD) {
-			pacManNextDir = "up";
-			if (pacManCurDir == "down") {
-				turnCharacter("pacman");
-			}
-		}
-		else {
-			//nothing. In 3D we only turn.
+		pacManNextDir = "up";
+		if (pacManCurDir == "down") {
+			turnCharacter("pacman");
 		}
 		break;
 	case 's':
-		if(!ThreeD){
-			pacManNextDir = "down";
-			if (pacManCurDir == "up") {
-				turnCharacter("pacman");
-			}
+		pacManNextDir = "down";
+		if (pacManCurDir == "up") {
+			turnCharacter("pacman");
 		}
-		else {
-			if (pacManCurDir == "up") {
-				pacManNextDir = "down";
-				turnCharacter("pacman");
-			}
-			else if (pacManCurDir == "down") {
-				pacManNextDir = "up";
-				turnCharacter("pacman");
-			}
-			else if (pacManCurDir == "right") {
-				pacManNextDir = "left";
-				turnCharacter("pacman");
-			}
-			else if (pacManCurDir == "left") {
-				pacManNextDir = "right";
-				turnCharacter("pacman");
-			}
-		}
-		
 		break;
 	case 'a':
-		if (!ThreeD) {
-			pacManNextDir = "left";
-			if (pacManCurDir == "right") {
-				turnCharacter("pacman");
-			}
-		}
-		else {
-			if (pacManCurDir == "up") {
-				pacManNextDir = "left";
-			}
-			else if (pacManCurDir == "down") {
-				pacManNextDir = "right";
-			}
-			else if (pacManCurDir == "right") {
-				pacManNextDir = "up";
-			}
-			else if (pacManCurDir == "left") {
-				pacManNextDir = "down";
-			}
+		pacManNextDir = "left";
+		if (pacManCurDir == "right") {
+			turnCharacter("pacman");
 		}
 		break;
 	case 'd':
-		if (!ThreeD) {
-			pacManNextDir = "right";
-			if (pacManCurDir == "left") {
-				turnCharacter("pacman");
-			}
+		pacManNextDir = "right";
+		if (pacManCurDir == "left") {
+			turnCharacter("pacman");
 		}
-		else {
-			if (pacManCurDir == "up") {
-				pacManNextDir = "right";
-			}
-			else if (pacManCurDir == "down") {
-				pacManNextDir = "left";
-			}
-			else if (pacManCurDir == "right") {
-				pacManNextDir = "down";
-			}
-			else if (pacManCurDir == "left") {
-				pacManNextDir = "up";
-			}
-		}
-		
 		break;
-	case 'f':
-		if (ThreeD) {
-			ThreeD = 0;
-		}
-		else {
-			ThreeD = 1;
-		}
+	case 'c':
 		break;
 	case 't':
 		// use this key to print any output for debugging
