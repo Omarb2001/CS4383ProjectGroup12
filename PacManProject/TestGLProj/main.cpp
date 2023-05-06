@@ -27,7 +27,7 @@ using namespace std;
 
 using namespace glm;
 
-Shader shader; // loads our vertex and fragment shaders
+Shader yellowShader; // loads our vertex and fragment shaders
 Shader blueShader;
 
 
@@ -113,9 +113,9 @@ void checkError(const char* functionName)
 
 void initShader(void)
 {
-	shader.InitializeFromFile("shaders/phong.vert", "shaders/yellow.frag");
-	shader.AddAttribute("vertexPosition");
-	shader.AddAttribute("vertexNormal");
+	yellowShader.InitializeFromFile("shaders/phong.vert", "shaders/yellow.frag");
+	yellowShader.AddAttribute("vertexPosition");
+	yellowShader.AddAttribute("vertexNormal");
 
 	blueShader.InitializeFromFile("shaders/phong.vert", "shaders/blue.frag");
 	blueShader.AddAttribute("vertexPosition");
@@ -666,18 +666,18 @@ int main(int argc, char** argv)
 	glutKeyboardFunc(keyboard);
 	glEnable(GL_DEPTH_TEST);
 
-	pacMan = new Model(&shader, "models/sphere.obj");
+	pacMan = new Model(&yellowShader, "models/sphere.obj");
 	maze0 = new Model(&blueShader, "models/maze0.obj", "models/");
 
-	sphere1 = new Model(&shader, "models/sphere.obj");
-	sphere2 = new Model(&shader, "models/sphere.obj");
-	sphere3 = new Model(&shader, "models/sphere.obj");
-	sphere4 = new Model(&shader, "models/sphere.obj");
-	sphere5 = new Model(&shader, "models/sphere.obj");
-	sphere6 = new Model(&shader, "models/sphere.obj");
-	sphere7 = new Model(&shader, "models/sphere.obj");
-	sphere8 = new Model(&shader, "models/sphere.obj");
-	sphere9 = new Model(&shader, "models/sphere.obj");
+	sphere1 = new Model(&yellowShader, "models/sphere.obj");
+	sphere2 = new Model(&yellowShader, "models/sphere.obj");
+	sphere3 = new Model(&yellowShader, "models/sphere.obj");
+	sphere4 = new Model(&yellowShader, "models/sphere.obj");
+	sphere5 = new Model(&yellowShader, "models/sphere.obj");
+	sphere6 = new Model(&yellowShader, "models/sphere.obj");
+	sphere7 = new Model(&yellowShader, "models/sphere.obj");
+	sphere8 = new Model(&yellowShader, "models/sphere.obj");
+	sphere9 = new Model(&yellowShader, "models/sphere.obj");
 
 
 	// top row

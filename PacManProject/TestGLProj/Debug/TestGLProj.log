@@ -1,1 +1,16 @@
-﻿  TestGLProj.vcxproj -> C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\Debug\TestGLProj.exe
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  main.cpp
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\include\glm\gtx\string_cast.inl(30,4): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(295,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(307,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(329,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(350,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(357,20): warning C4018: '<': signed/unsigned mismatch
+  Model.cpp
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\TestGLProj\Model.cpp(8,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\TestGLProj\Model.cpp(39,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\TestGLProj\Model.cpp(56,20): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  LINK : C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\Debug\TestGLProj.exe not found or not built by the last incremental link; performing full link
+Intersection.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  TestGLProj.vcxproj -> C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\Debug\TestGLProj.exe

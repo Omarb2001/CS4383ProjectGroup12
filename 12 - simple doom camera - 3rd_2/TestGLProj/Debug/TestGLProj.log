@@ -1,1 +1,27 @@
-﻿  TestGLProj.vcxproj -> C:\Users\badra\Desktop\uni\Spring 2023\CS4383 Computer Graphics\final project\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\Debug\TestGLProj.exe
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  tiny_obj_loader.cpp
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\tiny_obj_loader.cpp(173,3): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\tiny_obj_loader.cpp(340,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\tiny_obj_loader.cpp(571,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\tiny_obj_loader.cpp(587,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\tiny_obj_loader.cpp(643,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  main.cpp
+  Shader.cpp
+  Model.cpp
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(8,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(69,12): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(69,25): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(111,13): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(111,25): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(112,13): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(153,13): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(153,27): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(154,13): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(196,13): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(238,13): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(288,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(317,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\TestGLProj\Model.cpp(431,20): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+main.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  TestGLProj.vcxproj -> C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\12 - simple doom camera - 3rd_2\Debug\TestGLProj.exe
