@@ -56,8 +56,8 @@ glm::mat4 view; // where the camera is looking
 glm::mat4 model; // where the model (i.e., the myModel) is located wrt the camera
 
 float OBJ_DEPTH = -20.0f;
-float PAC_MAN_SPEED = 0.1f;
-float GHOST_SPEED = 0.07f;
+float PAC_MAN_SPEED = 0.075f;
+float GHOST_SPEED = 0.05f;
 float SLOW_GHOSTS = 0.05f;;
 
 vec3 mazePos = vec3(0.0f, 0.0f, OBJ_DEPTH);
@@ -570,13 +570,7 @@ void detectTurn(std::string character, float objXPos, float objYPos, std::string
 
 void detectPellets(std::string character, float objXPos, float objYPos) {
 	vec3 objPos = vec3(objXPos, objYPos, OBJ_DEPTH);
-	for (int i = 0; i < intersections.size(); i++) {
-		Intersection curIntersection = intersections[i];
-		float dist = glm::distance(objPos, curIntersection.position);
-		if (dist < TURN_DETECTION_DISTANCE && isFrozen != 1) { // check if we're close enough to the intersection to turn
-			score++;
-		}
-	}
+	
 	float pelletsDist[NUMPELLETS];
 
 	for (int i = 1; i < NUMPELLETS; i++) {
@@ -630,7 +624,7 @@ void gameOver(std::string character, std::string character1, float objXPos, floa
 void ghostAI(std::string character, std::string character1, float objXPos, float objYPos, float obj1XPos, float obj1YPos, std::string objCurDir, std::string objNextDir) {
 	vec3 objPos = vec3(objXPos, objYPos, OBJ_DEPTH);
 	vec3 obj1Pos = vec3(obj1XPos, obj1YPos, OBJ_DEPTH);
-
+	
 	for (int i = 0; i < intersections.size(); i++) {
 		Intersection curIntersection = intersections[i];
 		float turn1_dist = glm::distance(obj1Pos, curIntersection.position);
@@ -641,7 +635,8 @@ void ghostAI(std::string character, std::string character1, float objXPos, float
 					adjustCharacter(character1, curIntersection);
 					turnCharacter(character1);
 					isFrozen = 0;
-					int possibleTurns1 = curDirs1.size(); srand((unsigned)time(0));
+					int possibleTurns1 = curDirs1.size();
+					srand((unsigned)time(0));
 					int index1;
 					index1 = (rand() % possibleTurns1);
 					ghost1NextDir = curDirs1[index1];
@@ -666,7 +661,8 @@ void ghostAI(std::string character, std::string character1, float objXPos, float
 					adjustCharacter(character1, curIntersection);
 					turnCharacter(character1);
 					isFrozen = 0;
-					int possibleTurns2 = curDirs2.size(); srand((unsigned)time(0));
+					int possibleTurns2 = curDirs2.size(); 
+					srand((unsigned)time(0));
 					int index2;
 					index2 = (rand() % possibleTurns2);
 					ghost2NextDir = curDirs2[index2];
@@ -691,7 +687,8 @@ void ghostAI(std::string character, std::string character1, float objXPos, float
 					adjustCharacter(character1, curIntersection);
 					turnCharacter(character1);
 					isFrozen = 0;
-					int possibleTurns3 = curDirs3.size(); srand((unsigned)time(0));
+					int possibleTurns3 = curDirs3.size(); 
+					srand((unsigned)time(0));
 					int index3;
 					index3 = (rand() * 3 % possibleTurns3);
 					ghost3NextDir = curDirs3[index3];
@@ -716,7 +713,8 @@ void ghostAI(std::string character, std::string character1, float objXPos, float
 					adjustCharacter(character1, curIntersection);
 					turnCharacter(character1);
 					isFrozen = 0;
-					int possibleTurns4 = curDirs4.size(); srand((unsigned)time(0));
+					int possibleTurns4 = curDirs4.size(); 
+					srand((unsigned)time(0));
 					int index4;
 					index4 = (rand() * 2 % possibleTurns4);
 					ghost4NextDir = curDirs4[index4];
@@ -732,8 +730,8 @@ void ghostAI(std::string character, std::string character1, float objXPos, float
 					break;
 				}
 			}
+			
 		}
-
 	}
 }
 
@@ -908,10 +906,10 @@ void display(void)
 	glColor3f(0.0, 1.0, 0.0);
 	glRasterPos2f(0.7f, 0.85f);
 	stringstream strs2;
-	strs2 << currentDist;
+	strs2 << ghost3NextDir;
 	temp = strs2.str();
 	scr_temp = (char*)temp.c_str();
-	string = "current Dist: ";
+	string = "ghost1NextDir: ";
 	i = 5;
 	for (c = string; *c != '\0'; c++) {
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
