@@ -27,12 +27,19 @@ using namespace std;
 
 using namespace glm;
 
-Shader shader; // loads our vertex and fragment shaders
+Shader yellowShader; // loads our vertex and fragment shaders
 Shader blueShader;
-
+Shader redShader;
+Shader cyanShader;
+Shader orangeShader;
+Shader pinkShader;
 
 Model* pacMan;
 Model* maze0;
+Model* redGhost;
+Model* cyanGhost;
+Model* orangeGhost;
+Model* pinkGhost;
 
 Model* sphere1;
 Model* sphere2;
@@ -50,6 +57,7 @@ glm::mat4 model; // where the model (i.e., the myModel) is located wrt the camer
 
 float OBJ_DEPTH = -20.0f;
 float PAC_MAN_SPEED = 0.1f;
+float GHOST_SPEED = 0.07f;
 float SLOW_GHOSTS = 0.05f;;
 
 vec3 mazePos = vec3(0.0f, 0.0f, OBJ_DEPTH);
@@ -80,7 +88,34 @@ float ghost1YSpeed = 0.0f;
 float ghost1Rot = 0.0f;
 std::string ghost1CurDir = "left";
 std::string ghost1NextDir = "left";
-std::string correctedTurn = "";
+
+//ghost 2
+float ghost2XPos = 11.3403f;
+float ghost2YPos = -10.1f;
+float ghost2XSpeed = -GHOST_SPEED;
+float ghost2YSpeed = 0.0f;
+float ghost2Rot = 0.0f;
+std::string ghost2CurDir = "left";
+std::string ghost2NextDir = "left";
+
+// ghost3
+float ghost3XPos = -11.3403f;
+float ghost3YPos = -10.1f;
+float ghost3XSpeed = -GHOST_SPEED;
+float ghost3YSpeed = 0.0f;
+float ghost3Rot = 0.0f;
+std::string ghost3CurDir = "left";
+std::string ghost3NextDir = "left";
+
+// ghost4
+float ghost4XPos = -11.3403f;
+float ghost4YPos = 10.1f;
+float ghost4XSpeed = -GHOST_SPEED;
+float ghost4YSpeed = 0.0f;
+float ghost4Rot = 0.0f;
+std::string ghost4CurDir = "left";
+std::string ghost4NextDir = "left";
+
 
 // intersections
 std::vector<Intersection> intersections;
@@ -101,6 +136,9 @@ int currentDist = 0;
 int isFrozen = 0;
 int ThreeD;
 
+const int NUMPELLETS = 10;
+vec3 pelletLoc3[NUMPELLETS];
+int renderPellets[NUMPELLETS];
 
 /* report GL errors, if any, to stderr */
 void checkError(const char* functionName)
@@ -113,13 +151,29 @@ void checkError(const char* functionName)
 
 void initShader(void)
 {
-	shader.InitializeFromFile("shaders/phong.vert", "shaders/yellow.frag");
-	shader.AddAttribute("vertexPosition");
-	shader.AddAttribute("vertexNormal");
+	yellowShader.InitializeFromFile("shaders/phong.vert", "shaders/yellow.frag");
+	yellowShader.AddAttribute("vertexPosition");
+	yellowShader.AddAttribute("vertexNormal");
 
 	blueShader.InitializeFromFile("shaders/phong.vert", "shaders/blue.frag");
 	blueShader.AddAttribute("vertexPosition");
 	blueShader.AddAttribute("vertexNormal");
+
+	redShader.InitializeFromFile("shaders/phong.vert", "shaders/red.frag");
+	redShader.AddAttribute("vertexPosition");
+	redShader.AddAttribute("vertexNormal");
+
+	cyanShader.InitializeFromFile("shaders/phong.vert", "shaders/cyan.frag");
+	cyanShader.AddAttribute("vertexPosition");
+	cyanShader.AddAttribute("vertexNormal");
+
+	orangeShader.InitializeFromFile("shaders/phong.vert", "shaders/orange.frag");
+	orangeShader.AddAttribute("vertexPosition");
+	orangeShader.AddAttribute("vertexNormal");
+
+	pinkShader.InitializeFromFile("shaders/phong.vert", "shaders/pink.frag");
+	pinkShader.AddAttribute("vertexPosition");
+	pinkShader.AddAttribute("vertexNormal");
 
 	checkError("initShader");
 }
@@ -183,37 +237,128 @@ void turnCharacter(std::string character) {
 			pacManRot = 90;
 		}
 	}
-	//ghost turning code here
-	else if (character == "ghost") {
+	else if (character == "ghost1") {
 		if (ghost1CurDir == ghost1NextDir) {
 			ghost1XPos += ghost1XSpeed;
 			ghost1YPos += ghost1YSpeed;
 		}
 		else if (ghost1NextDir == "left") {
-			ghost1XSpeed = -PAC_MAN_SPEED;
+			ghost1XSpeed = -GHOST_SPEED;
 			ghost1YSpeed = 0.0f;
 			ghost1CurDir = ghost1NextDir;
 			ghost1Rot = 0;
 		}
 		else if (ghost1NextDir == "right") {
-			ghost1XSpeed = PAC_MAN_SPEED;
+			ghost1XSpeed = GHOST_SPEED;
 			ghost1YSpeed = 0.0f;
 			ghost1CurDir = ghost1NextDir;
 			ghost1Rot = 180;
 		}
 		else if (ghost1NextDir == "up") {
 			ghost1XSpeed = 0.0f;
-			ghost1YSpeed = PAC_MAN_SPEED;
+			ghost1YSpeed = GHOST_SPEED;
 			ghost1CurDir = ghost1NextDir;
 			ghost1Rot = -90;
 		}
 		else if (ghost1NextDir == "down") {
 			ghost1XSpeed = 0.0f;
-			ghost1YSpeed = -PAC_MAN_SPEED;
+			ghost1YSpeed = -GHOST_SPEED;
 			ghost1CurDir = ghost1NextDir;
 			ghost1Rot = 90;
 		}
-		
+	}
+	else if (character == "ghost2") {
+		if (ghost2CurDir == ghost2NextDir) {
+			ghost2XPos += ghost2XSpeed;
+			ghost2YPos += ghost2YSpeed;
+		}
+		else if (ghost2NextDir == "left") {
+			ghost2XSpeed = -GHOST_SPEED;
+			ghost2YSpeed = 0.0f;
+			ghost2CurDir = ghost2NextDir;
+			ghost2Rot = 0;
+		}
+		else if (ghost2NextDir == "right") {
+			ghost2XSpeed = GHOST_SPEED;
+			ghost2YSpeed = 0.0f;
+			ghost2CurDir = ghost2NextDir;
+			ghost2Rot = 180;
+		}
+		else if (ghost2NextDir == "up") {
+			ghost2XSpeed = 0.0f;
+			ghost2YSpeed = GHOST_SPEED;
+			ghost2CurDir = ghost2NextDir;
+			ghost2Rot = -90;
+		}
+		else if (ghost2NextDir == "down") {
+			ghost2XSpeed = 0.0f;
+			ghost2YSpeed = -GHOST_SPEED;
+			ghost2CurDir = ghost2NextDir;
+			ghost2Rot = 90;
+		}
+
+	}
+	else if (character == "ghost3") {
+		if (ghost3CurDir == ghost3NextDir) {
+			ghost3XPos += ghost3XSpeed;
+			ghost3YPos += ghost3YSpeed;
+		}
+		else if (ghost3NextDir == "left") {
+			ghost3XSpeed = -GHOST_SPEED;
+			ghost3YSpeed = 0.0f;
+			ghost3CurDir = ghost3NextDir;
+			ghost3Rot = 0;
+		}
+		else if (ghost3NextDir == "right") {
+			ghost3XSpeed = GHOST_SPEED;
+			ghost3YSpeed = 0.0f;
+			ghost3CurDir = ghost3NextDir;
+			ghost3Rot = 180;
+		}
+		else if (ghost3NextDir == "up") {
+			ghost3XSpeed = 0.0f;
+			ghost3YSpeed = GHOST_SPEED;
+			ghost3CurDir = ghost3NextDir;
+			ghost3Rot = -90;
+		}
+		else if (ghost3NextDir == "down") {
+			ghost3XSpeed = 0.0f;
+			ghost3YSpeed = -GHOST_SPEED;
+			ghost3CurDir = ghost3NextDir;
+			ghost3Rot = 90;
+		}
+
+	}
+	else if (character == "ghost4") {
+		if (ghost4CurDir == ghost4NextDir) {
+			ghost4XPos += ghost4XSpeed;
+			ghost4YPos += ghost4YSpeed;
+		}
+		else if (ghost4NextDir == "left") {
+			ghost4XSpeed = -GHOST_SPEED;
+			ghost4YSpeed = 0.0f;
+			ghost4CurDir = ghost4NextDir;
+			ghost4Rot = 0;
+		}
+		else if (ghost4NextDir == "right") {
+			ghost4XSpeed = GHOST_SPEED;
+			ghost4YSpeed = 0.0f;
+			ghost4CurDir = ghost4NextDir;
+			ghost4Rot = 180;
+		}
+		else if (ghost4NextDir == "up") {
+			ghost4XSpeed = 0.0f;
+			ghost4YSpeed = GHOST_SPEED;
+			ghost4CurDir = ghost4NextDir;
+			ghost4Rot = -90;
+		}
+		else if (ghost4NextDir == "down") {
+			ghost4XSpeed = 0.0f;
+			ghost4YSpeed = -GHOST_SPEED;
+			ghost4CurDir = ghost4NextDir;
+			ghost4Rot = 90;
+		}
+
 	}
 }
 
@@ -247,31 +392,115 @@ void adjustCharacter(std::string character, Intersection intersection) {
 		}
 	}
 	//ghost adjusting code here
-	else if (character == "ghost"){
+	else if (character == "ghost1") {
 		ghost1XPos = intersection.position.x;
 		ghost1YPos = intersection.position.y;
 		if (ghost1NextDir == "up") {
 			ghost1XSpeed = 0.0f;
-			ghost1YSpeed = PAC_MAN_SPEED;
+			ghost1YSpeed = GHOST_SPEED;
 			ghost1YPos += ghost1YSpeed;
 
 		}
 		else if (ghost1NextDir == "down") {
 			ghost1XSpeed = 0.0f;
-			ghost1YSpeed = -PAC_MAN_SPEED;
+			ghost1YSpeed = -GHOST_SPEED;
 			ghost1YPos -= ghost1YSpeed;
 
 		}
 		else if (ghost1NextDir == "left") {
-			ghost1XSpeed = -PAC_MAN_SPEED;
+			ghost1XSpeed = -GHOST_SPEED;
 			ghost1YSpeed = 0.0f;
 			ghost1XPos -= ghost1XSpeed;
 
 		}
 		else if (ghost1NextDir == "right") {
-			ghost1XSpeed = PAC_MAN_SPEED;
+			ghost1XSpeed = GHOST_SPEED;
 			ghost1YSpeed = 0.0f;
 			ghost1XPos += ghost1XSpeed;
+
+		}
+	}
+	else if (character == "ghost2") {
+		ghost2XPos = intersection.position.x;
+		ghost2YPos = intersection.position.y;
+		if (ghost2NextDir == "up") {
+			ghost2XSpeed = 0.0f;
+			ghost2YSpeed = GHOST_SPEED;
+			ghost2YPos += ghost2YSpeed;
+
+		}
+		else if (ghost2NextDir == "down") {
+			ghost2XSpeed = 0.0f;
+			ghost2YSpeed = -GHOST_SPEED;
+			ghost2YPos -= ghost2YSpeed;
+
+		}
+		else if (ghost2NextDir == "left") {
+			ghost2XSpeed = -GHOST_SPEED;
+			ghost2YSpeed = 0.0f;
+			ghost2XPos -= ghost2XSpeed;
+
+		}
+		else if (ghost2NextDir == "right") {
+			ghost2XSpeed = GHOST_SPEED;
+			ghost2YSpeed = 0.0f;
+			ghost2XPos += ghost2XSpeed;
+
+		}
+	}
+	else if (character == "ghost3") {
+		ghost3XPos = intersection.position.x;
+		ghost3YPos = intersection.position.y;
+		if (ghost3NextDir == "up") {
+			ghost3XSpeed = 0.0f;
+			ghost3YSpeed = GHOST_SPEED;
+			ghost3YPos += ghost3YSpeed;
+
+		}
+		else if (ghost3NextDir == "down") {
+			ghost3XSpeed = 0.0f;
+			ghost3YSpeed = -GHOST_SPEED;
+			ghost3YPos -= ghost3YSpeed;
+
+		}
+		else if (ghost3NextDir == "left") {
+			ghost3XSpeed = -GHOST_SPEED;
+			ghost3YSpeed = 0.0f;
+			ghost3XPos -= ghost3XSpeed;
+
+		}
+		else if (ghost3NextDir == "right") {
+			ghost3XSpeed = GHOST_SPEED;
+			ghost3YSpeed = 0.0f;
+			ghost3XPos += ghost3XSpeed;
+
+		}
+	}
+	else if (character == "ghost4") {
+		ghost4XPos = intersection.position.x;
+		ghost4YPos = intersection.position.y;
+		if (ghost4NextDir == "up") {
+			ghost4XSpeed = 0.0f;
+			ghost4YSpeed = GHOST_SPEED;
+			ghost4YPos += ghost4YSpeed;
+
+		}
+		else if (ghost4NextDir == "down") {
+			ghost4XSpeed = 0.0f;
+			ghost4YSpeed = -GHOST_SPEED;
+			ghost4YPos -= ghost4YSpeed;
+
+		}
+		else if (ghost4NextDir == "left") {
+			ghost4XSpeed = -GHOST_SPEED;
+			ghost4YSpeed = 0.0f;
+			ghost4XPos -= ghost4XSpeed;
+
+		}
+		else if (ghost4NextDir == "right") {
+			ghost4XSpeed = GHOST_SPEED;
+			ghost4YSpeed = 0.0f;
+			ghost4XPos += ghost4XSpeed;
 
 		}
 	}
@@ -284,9 +513,24 @@ void freezeCharacter(std::string character) {
 		isFrozen = 1;
 	}
 	//ghost freezing code here
-	else if (character == "ghost") {
+	else if (character == "ghost1") {
 		ghost1XSpeed = 0.0f;
 		ghost1YSpeed = 0.0f;
+		isFrozen = 1;
+	}
+	else if (character == "ghost2") {
+		ghost2XSpeed = 0.0f;
+		ghost2YSpeed = 0.0f;
+		isFrozen = 1;
+	}
+	else if (character == "ghost3") {
+		ghost3XSpeed = 0.0f;
+		ghost3YSpeed = 0.0f;
+		isFrozen = 1;
+	}
+	else if (character == "ghost4") {
+		ghost4XSpeed = 0.0f;
+		ghost4YSpeed = 0.0f;
 		isFrozen = 1;
 	}
 }
@@ -324,7 +568,7 @@ void detectTurn(std::string character, float objXPos, float objYPos, std::string
 	}
 }
 
-void detectPellets(std::string character, float objXPos, float objYPos, std::string objCurDir, std::string objNextDir) {
+void detectPellets(std::string character, float objXPos, float objYPos) {
 	vec3 objPos = vec3(objXPos, objYPos, OBJ_DEPTH);
 	for (int i = 0; i < intersections.size(); i++) {
 		Intersection curIntersection = intersections[i];
@@ -333,62 +577,163 @@ void detectPellets(std::string character, float objXPos, float objYPos, std::str
 			score++;
 		}
 	}
+	float pelletsDist[NUMPELLETS];
+
+	for (int i = 1; i < NUMPELLETS; i++) {
+		pelletsDist[i] = glm::distance(objPos, pelletLoc3[i]);
+	}
+
+	for (int i = 1; i < NUMPELLETS; i++) {
+		if (renderPellets[i] == 0 && pelletsDist[i] < 1.5f) {
+			renderPellets[i] = 1;
+			score += 10;
+		}
+	}
 }
 
 //Check if game over
-void gameOver1(std::string character, std::string character1, float objXPos, float objYPos, float obj1XPos, float obj1YPos) {
+void gameOver(std::string character, std::string character1, float objXPos, float objYPos, float obj1XPos, float obj1YPos) {
 	vec3 objPos = vec3(objXPos, objYPos, OBJ_DEPTH);
 	vec3 obj1Pos = vec3(obj1XPos, obj1YPos, OBJ_DEPTH);
-	
-	float enemy1_dist = glm::distance(objPos, obj1Pos);
-	//check if close enough to ghost1
-	if (enemy1_dist < 2.0f) {
-		gameOverInt++;
+	if (gameOverInt == 0) {
+		if (character1 == "ghost1") {
+			float enemy1_dist = glm::distance(objPos, obj1Pos);
+			//check if close enough to ghost1
+			if (enemy1_dist < 2.0f) {
+				gameOverInt++;
+			}
+		}
+		else if (character1 == "ghost2") {
+			float enemy2_dist = glm::distance(objPos, obj1Pos);
+			//check if close enough to ghost1
+			if (enemy2_dist < 2.0f) {
+				gameOverInt++;
+			}
+		}
+		else if (character1 == "ghost3") {
+			float enemy3_dist = glm::distance(objPos, obj1Pos);
+			//check if close enough to ghost1
+			if (enemy3_dist < 2.0f) {
+				gameOverInt++;
+			}
+		}
+		else if (character1 == "ghost4") {
+			float enemy4_dist = glm::distance(objPos, obj1Pos);
+			//check if close enough to ghost1
+			if (enemy4_dist < 2.0f) {
+				gameOverInt++;
+			}
+		}
 	}
-	//update on current dist a ghost is from pacman on map
-	//if (enemy1_dist > farthestDist) {
-		currentDist = enemy1_dist;
-	//}
 }
 
-void ghost1AI(std::string character, std::string character1, float objXPos, float objYPos, float obj1XPos, float obj1YPos, std::string objCurDir, std::string objNextDir) {
+void ghostAI(std::string character, std::string character1, float objXPos, float objYPos, float obj1XPos, float obj1YPos, std::string objCurDir, std::string objNextDir) {
 	vec3 objPos = vec3(objXPos, objYPos, OBJ_DEPTH);
 	vec3 obj1Pos = vec3(obj1XPos, obj1YPos, OBJ_DEPTH);
+
 	for (int i = 0; i < intersections.size(); i++) {
 		Intersection curIntersection = intersections[i];
 		float turn1_dist = glm::distance(obj1Pos, curIntersection.position);
-		if (turn1_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
-			std::vector<std::string> curDirs = curIntersection.directions;
-			if (contains(curDirs, objNextDir)) {
-				
-				adjustCharacter(character1, curIntersection);
-				turnCharacter(character1);
-				isFrozen = 0;
-				
-				int possibleTurns = curDirs.size();
-
-
-				srand((unsigned)time(0));
-				int index;
-				index = (rand() % possibleTurns);
-				ghost1NextDir = curDirs[index];
-				
-			}
-			else {
-				// if we try to turn into a wall, the character should not be translated
-				freezeCharacter(character1);
-				int possibleTurns = curDirs.size();
-				
-				
-				srand((unsigned)time(0));
-				int index;
-				index = (rand() % possibleTurns);
-				
-				ghost1NextDir = curDirs[index];
-				
-				break;
+		if (character1 == "ghost1") {
+			if (turn1_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
+				std::vector<std::string> curDirs1 = curIntersection.directions;
+				if (contains(curDirs1, objNextDir)) {
+					adjustCharacter(character1, curIntersection);
+					turnCharacter(character1);
+					isFrozen = 0;
+					int possibleTurns1 = curDirs1.size(); srand((unsigned)time(0));
+					int index1;
+					index1 = (rand() % possibleTurns1);
+					ghost1NextDir = curDirs1[index1];
+				}
+				else {
+					// if we try to turn into a wall, the character should not be translated
+					freezeCharacter(character1);
+					int possibleTurns1 = curDirs1.size();
+					srand((unsigned)time(0));
+					int index1;
+					index1 = (rand() % possibleTurns1);
+					ghost1NextDir = curDirs1[index1];
+					break;
+				}
 			}
 		}
+		else if (character1 == "ghost2") {
+			float turn2_dist = glm::distance(obj1Pos, curIntersection.position);
+			if (turn2_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
+				std::vector<std::string> curDirs2 = curIntersection.directions;
+				if (contains(curDirs2, objNextDir)) {
+					adjustCharacter(character1, curIntersection);
+					turnCharacter(character1);
+					isFrozen = 0;
+					int possibleTurns2 = curDirs2.size(); srand((unsigned)time(0));
+					int index2;
+					index2 = (rand() % possibleTurns2);
+					ghost2NextDir = curDirs2[index2];
+				}
+				else {
+					// if we try to turn into a wall, the character should not be translated
+					freezeCharacter(character1);
+					int possibleTurns2 = curDirs2.size();
+					srand((unsigned)time(0));
+					int index2;
+					index2 = (rand() % possibleTurns2);
+					ghost2NextDir = curDirs2[index2];
+					break;
+				}
+			}
+		}
+		else if (character1 == "ghost3") {
+			float turn3_dist = glm::distance(obj1Pos, curIntersection.position);
+			if (turn3_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
+				std::vector<std::string> curDirs3 = curIntersection.directions;
+				if (contains(curDirs3, objNextDir)) {
+					adjustCharacter(character1, curIntersection);
+					turnCharacter(character1);
+					isFrozen = 0;
+					int possibleTurns3 = curDirs3.size(); srand((unsigned)time(0));
+					int index3;
+					index3 = (rand() * 3 % possibleTurns3);
+					ghost3NextDir = curDirs3[index3];
+				}
+				else {
+					// if we try to turn into a wall, the character should not be translated
+					freezeCharacter(character1);
+					int possibleTurns3 = curDirs3.size();
+					srand((unsigned)time(0));
+					int index3;
+					index3 = (rand() * 3 % possibleTurns3);
+					ghost3NextDir = curDirs3[index3];
+					break;
+				}
+			}
+		}
+		else if (character1 == "ghost4") {
+			float turn4_dist = glm::distance(obj1Pos, curIntersection.position);
+			if (turn4_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
+				std::vector<std::string> curDirs4 = curIntersection.directions;
+				if (contains(curDirs4, objNextDir)) {
+					adjustCharacter(character1, curIntersection);
+					turnCharacter(character1);
+					isFrozen = 0;
+					int possibleTurns4 = curDirs4.size(); srand((unsigned)time(0));
+					int index4;
+					index4 = (rand() * 2 % possibleTurns4);
+					ghost4NextDir = curDirs4[index4];
+				}
+				else {
+					// if we try to turn into a wall, the character should not be translated
+					freezeCharacter(character1);
+					int possibleTurns4 = curDirs4.size();
+					srand((unsigned)time(0));
+					int index4;
+					index4 = (rand() * 2 % possibleTurns4);
+					ghost4NextDir = curDirs4[index4];
+					break;
+				}
+			}
+		}
+
 	}
 }
 
@@ -411,65 +756,113 @@ void display(void)
 		eye = center - cameraDistance * cameraForward;
 		view = lookAt(vec3(eye), vec3(center), vec3(cameraUp));
 
-		detectPellets("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
+		detectPellets("pacman", pacManXPos, pacManYPos);
 		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
-		gameOver1("pacman", "ghost", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
-		ghost1AI("pacman", "ghost", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos, ghost1CurDir, ghost1NextDir);
-
+		gameOver("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
+		gameOver("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos);
+		gameOver("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos);
+		gameOver("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos);
+		ghostAI("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos, ghost1CurDir, ghost1NextDir);
+		ghostAI("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos, ghost2CurDir, ghost2NextDir);
+		ghostAI("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos, ghost3CurDir, ghost3NextDir);
+		ghostAI("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos, ghost4CurDir, ghost4NextDir);
 
 		pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection);
-		pacMan->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
+		redGhost->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
+		cyanGhost->render(view * translate(vec3(ghost2XPos, ghost2YPos, OBJ_DEPTH)) * rotate(ghost2Rot, 0.0f, 0.0f, 1.0f), projection);
+		orangeGhost->render(view * translate(vec3(ghost3XPos, ghost3YPos, OBJ_DEPTH)) * rotate(ghost3Rot, 0.0f, 0.0f, 1.0f), projection);
+		pinkGhost->render(view * translate(vec3(ghost4XPos, ghost4YPos, OBJ_DEPTH)) * rotate(ghost4Rot, 0.0f, 0.0f, 1.0f), projection);
 
 		maze0->render(view * translate(mazePos), projection);
 
-		sphere1->render(view * translate(-11.3403f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere2->render(view * translate(0.0f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere3->render(view * translate(11.3403f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[1] == 0)
+			sphere1->render(view * translate(pelletLoc3[1]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[2] == 0)
+			sphere2->render(view * translate(pelletLoc3[2]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[3] == 0)
+			sphere3->render(view * translate(pelletLoc3[3]) * scale(0.5f, 0.5f, 0.5f), projection);
 
-		sphere4->render(view * translate(-11.3403f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere5->render(view * translate(0.0f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere6->render(view * translate(11.3403f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[4] == 0)
+			sphere4->render(view * translate(pelletLoc3[4]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[5] == 0)
+			sphere5->render(view * translate(pelletLoc3[5]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[6] == 0)
+			sphere6->render(view * translate(pelletLoc3[6]) * scale(0.5f, 0.5f, 0.5f), projection);
 
-		sphere7->render(view * translate(-11.3403f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere8->render(view * translate(0.0f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere9->render(view * translate(11.3403f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[7] == 0)
+			sphere7->render(view * translate(pelletLoc3[7]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[8] == 0)
+			sphere8->render(view * translate(pelletLoc3[8]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[9] == 0)
+			sphere9->render(view * translate(pelletLoc3[9]) * scale(0.5f, 0.5f, 0.5f), projection);
 
 		pacManXPos += pacManXSpeed;
 		pacManYPos += pacManYSpeed;
 		ghost1XPos += ghost1XSpeed;
 		ghost1YPos += ghost1YSpeed;
+		ghost2XPos += ghost2XSpeed;
+		ghost2YPos += ghost2YSpeed;
+		ghost3XPos += ghost3XSpeed;
+		ghost3YPos += ghost3YSpeed;
+		ghost4XPos += ghost4XSpeed;
+		ghost4YPos += ghost4YSpeed;
 	}
 	else {
 		view = lookAt(vec3(vec4(pacManXPos, pacManYPos, OBJ_DEPTH,0) - (rotate(pacManRot, 0.f, 0.f, 1.f) *
 			vec4(-1, 0, 0, 0) * 10) + glm::vec4(0.0f, 0.f, 10, 0.f)), vec3(pacManXPos, pacManYPos, OBJ_DEPTH), vec3(cameraUpThreeD));
 
-		detectPellets("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
+		detectPellets("pacman", pacManXPos, pacManYPos);
 		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
-		gameOver1("pacman", "ghost", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
-		ghost1AI("pacman", "ghost", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos, ghost1CurDir, ghost1NextDir);
-
+		
+		gameOver("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
+		gameOver("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos);
+		gameOver("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos);
+		gameOver("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos);
+		ghostAI("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos, ghost1CurDir, ghost1NextDir);
+		ghostAI("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos, ghost2CurDir, ghost2NextDir);
+		ghostAI("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos, ghost3CurDir, ghost3NextDir);
+		ghostAI("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos, ghost4CurDir, ghost4NextDir);
 
 		pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection);
-		pacMan->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
 
+		redGhost->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
+		cyanGhost->render(view * translate(vec3(ghost2XPos, ghost2YPos, OBJ_DEPTH)) * rotate(ghost2Rot, 0.0f, 0.0f, 1.0f), projection);
+		orangeGhost->render(view * translate(vec3(ghost3XPos, ghost3YPos, OBJ_DEPTH)) * rotate(ghost3Rot, 0.0f, 0.0f, 1.0f), projection);
+		pinkGhost->render(view * translate(vec3(ghost4XPos, ghost4YPos, OBJ_DEPTH)) * rotate(ghost4Rot, 0.0f, 0.0f, 1.0f), projection);
+		
 		maze0->render(view * translate(mazePos), projection);
 
-		sphere1->render(view * translate(-11.3403f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere2->render(view * translate(0.0f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere3->render(view * translate(11.3403f, 10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[1] == 0)
+			sphere1->render(view * translate(pelletLoc3[1]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[2] == 0)
+			sphere2->render(view * translate(pelletLoc3[2]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[3] == 0)
+			sphere3->render(view * translate(pelletLoc3[3]) * scale(0.5f, 0.5f, 0.5f), projection);
 
-		sphere4->render(view * translate(-11.3403f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere5->render(view * translate(0.0f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere6->render(view * translate(11.3403f, 0.0f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[4] == 0)
+			sphere4->render(view * translate(pelletLoc3[4]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[5] == 0)
+			sphere5->render(view * translate(pelletLoc3[5]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[6] == 0)
+			sphere6->render(view * translate(pelletLoc3[6]) * scale(0.5f, 0.5f, 0.5f), projection);
 
-		sphere7->render(view * translate(-11.3403f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere8->render(view * translate(0.0f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
-		sphere9->render(view * translate(11.3403f, -10.1f, OBJ_DEPTH) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[7] == 0)
+			sphere7->render(view * translate(pelletLoc3[7]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[8] == 0)
+			sphere8->render(view * translate(pelletLoc3[8]) * scale(0.5f, 0.5f, 0.5f), projection);
+		if (renderPellets[9] == 0)
+			sphere9->render(view * translate(pelletLoc3[9]) * scale(0.5f, 0.5f, 0.5f), projection);
 
 		pacManXPos += pacManXSpeed;
 		pacManYPos += pacManYSpeed;
 		ghost1XPos += ghost1XSpeed;
 		ghost1YPos += ghost1YSpeed;
+		ghost2XPos += ghost2XSpeed;
+		ghost2YPos += ghost2YSpeed;
+		ghost3XPos += ghost3XSpeed;
+		ghost3YPos += ghost3YSpeed;
+		ghost4XPos += ghost4XSpeed;
+		ghost4YPos += ghost4YSpeed;
 	}
 
 	glColor3f(0.0, 1.0, 0.0);
@@ -666,18 +1059,24 @@ int main(int argc, char** argv)
 	glutKeyboardFunc(keyboard);
 	glEnable(GL_DEPTH_TEST);
 
-	pacMan = new Model(&shader, "models/sphere.obj");
+	pacMan = new Model(&yellowShader, "models/sphere.obj");
+
+	redGhost = new Model(&redShader, "models/ghost.obj", "models/");
+	cyanGhost = new Model(&cyanShader, "models/ghost.obj", "models/");
+	orangeGhost = new Model(&orangeShader, "models/ghost.obj", "models/");
+	pinkGhost = new Model(&pinkShader, "models/ghost.obj", "models/");
+
 	maze0 = new Model(&blueShader, "models/maze0.obj", "models/");
 
-	sphere1 = new Model(&shader, "models/sphere.obj");
-	sphere2 = new Model(&shader, "models/sphere.obj");
-	sphere3 = new Model(&shader, "models/sphere.obj");
-	sphere4 = new Model(&shader, "models/sphere.obj");
-	sphere5 = new Model(&shader, "models/sphere.obj");
-	sphere6 = new Model(&shader, "models/sphere.obj");
-	sphere7 = new Model(&shader, "models/sphere.obj");
-	sphere8 = new Model(&shader, "models/sphere.obj");
-	sphere9 = new Model(&shader, "models/sphere.obj");
+	sphere1 = new Model(&yellowShader, "models/sphere.obj");
+	sphere2 = new Model(&yellowShader, "models/sphere.obj");
+	sphere3 = new Model(&yellowShader, "models/sphere.obj");
+	sphere4 = new Model(&yellowShader, "models/sphere.obj");
+	sphere5 = new Model(&yellowShader, "models/sphere.obj");
+	sphere6 = new Model(&yellowShader, "models/sphere.obj");
+	sphere7 = new Model(&yellowShader, "models/sphere.obj");
+	sphere8 = new Model(&yellowShader, "models/sphere.obj");
+	sphere9 = new Model(&yellowShader, "models/sphere.obj");
 
 
 	// top row
@@ -704,9 +1103,15 @@ int main(int argc, char** argv)
 	intersections.push_back(Intersection(vec3(0.0f, -10.1f, OBJ_DEPTH), directions8));
 	intersections.push_back(Intersection(vec3(11.3403f, -10.1f, OBJ_DEPTH), directions9));
 
-
-
-
+	pelletLoc3[1] = vec3(-11.3403f, 10.1f, OBJ_DEPTH);
+	pelletLoc3[2] = vec3(0.0f, 10.1f, OBJ_DEPTH);
+	pelletLoc3[3] = vec3(11.3403f, 10.1f, OBJ_DEPTH);
+	pelletLoc3[4] = vec3(-11.3403f, 0.0f, OBJ_DEPTH);
+	pelletLoc3[5] = vec3(0.0f, 0.0f, OBJ_DEPTH);
+	pelletLoc3[6] = vec3(11.3403f, 0.0f, OBJ_DEPTH);
+	pelletLoc3[7] = vec3(-11.3403f, -10.1f, OBJ_DEPTH);
+	pelletLoc3[8] = vec3(0.0f, -10.1f, OBJ_DEPTH);
+	pelletLoc3[9] = vec3(11.3403f, -10.1f, OBJ_DEPTH);
 
 	glutMainLoop();
 
