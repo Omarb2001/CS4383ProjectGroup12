@@ -1,9 +1,1 @@
-﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
-  main.cpp
-C:\Users\Brandon\OneDrive\Documents\GitHub\CS4383ProjectGroup12\PacManProject\include\glm\gtx\string_cast.inl(30,4): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Brandon\OneDrive\Documents\GitHub\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(289,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Brandon\OneDrive\Documents\GitHub\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(301,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Brandon\OneDrive\Documents\GitHub\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(323,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Brandon\OneDrive\Documents\GitHub\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(344,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Brandon\OneDrive\Documents\GitHub\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(351,20): warning C4018: '<': signed/unsigned mismatch
-  TestGLProj.vcxproj -> C:\Users\Brandon\OneDrive\Documents\GitHub\CS4383ProjectGroup12\PacManProject\Debug\TestGLProj.exe
+﻿  TestGLProj.vcxproj -> C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\Debug\TestGLProj.exe

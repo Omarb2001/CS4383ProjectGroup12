@@ -27,7 +27,7 @@ Render the mesh to the screen
 @param Modelview - the model view matrix that defines where the camera is looking
 @param Projection - the projection matrix that defines how 3D vertices are projected on the 2D screen.
 */
-void Model::render(glm::mat4 ModelView, glm::mat4 Projection, int color) {
+void Model::render(glm::mat4 ModelView, glm::mat4 Projection) {
 
 	m_shader->Activate(); // Bind shader.
 
@@ -36,35 +36,13 @@ void Model::render(glm::mat4 ModelView, glm::mat4 Projection, int color) {
 	m_shader->SetUniform("ModelView", ModelView);  // send modelview to vertex shader
 	m_shader->SetUniform("lightPosition", glm::vec4(1.0, 0.0, 0.0, 1.0)); // send light position to vertex shader
 
-	Shader temp;
-	if (color == 1) {
-		temp.InitializeFromFile("shaders/phong.vert", "shaders/blue.frag");
-	}
-	if (color == 2) {
-		temp.InitializeFromFile("shaders/phong.vert", "shaders/red.frag");
-	}
-	if (color == 3) {
-		temp.InitializeFromFile("shaders/phong.vert", "shaders/green.frag");
-	}
-	if (color == 4) {
-		temp.InitializeFromFile("shaders/phong.vert", "shaders/yellow.frag");
-	}
-
-	temp.AddAttribute("vertexPosition");
-	temp.AddAttribute("vertexNormal");
-	temp.Activate();
-	//update the variables in the shader program
-	temp.SetUniform("Projection", Projection); // send projection to vertex shader
-	temp.SetUniform("ModelView", ModelView);  // send modelview to vertex shader
-	temp.SetUniform("lightPosition", glm::vec4(1.0, 0.0, 0.0, 1.0)); // send light position to vertex shader
-
 	for (int i = 0; i < shapes.size(); i++) {
 		glBindBuffer(GL_ARRAY_BUFFER, m_VBO[i]); // Bind VBO.
-		glEnableVertexAttribArray((temp)["vertexPosition"]); // Enable vertex attribute.
-		glVertexAttribPointer((temp)["vertexPosition"], 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0); // Attribute pointer.
+		glEnableVertexAttribArray((*m_shader)["vertexPosition"]); // Enable vertex attribute.
+		glVertexAttribPointer((*m_shader)["vertexPosition"], 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0); // Attribute pointer.
 		glBindBuffer(GL_ARRAY_BUFFER, m_NBO[i]); // Bind NBO.
-		glEnableVertexAttribArray((temp)["vertexNormal"]); // Enable normal attribute.
-		glVertexAttribPointer((temp)["vertexNormal"], 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+		glEnableVertexAttribArray((*m_shader)["vertexNormal"]); // Enable normal attribute.
+		glVertexAttribPointer((*m_shader)["vertexNormal"], 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO[i]); // Bind IBO.
 		glDrawElements(GL_TRIANGLES, shapes[i].mesh.indices.size(), GL_UNSIGNED_INT, 0); // Draw using indices
 	}

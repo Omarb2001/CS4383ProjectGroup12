@@ -27,7 +27,7 @@ public:
 	*/
 	Model(Shader* shader, const char* filename, const char* materialPath = NULL);
 	~Model(void) {} // default destructor
-	void render(glm::mat4 ModelView, glm::mat4 Projection, int color); // render the model
+	void render(glm::mat4 ModelView, glm::mat4 Projection); // render the model
 
 private:
 	Shader* m_shader; // shader program
