@@ -33,6 +33,7 @@ Shader redShader;
 Shader cyanShader;
 Shader orangeShader;
 Shader pinkShader;
+Shader shader;
 
 Model* pacMan;
 Model* maze0;
@@ -40,6 +41,7 @@ Model* redGhost;
 Model* cyanGhost;
 Model* orangeGhost;
 Model* pinkGhost;
+Model* cylinder;
 
 Model* sphere1;
 Model* sphere2;
@@ -140,6 +142,11 @@ const int NUMPELLETS = 10;
 vec3 pelletLoc3[NUMPELLETS];
 int renderPellets[NUMPELLETS];
 
+glm::vec4 lightPosition = glm::vec4(0.0f, 12.0f, OBJ_DEPTH + 3, 1.0f);
+glm::vec4 spotlightPosition = glm::vec4(0.0f, 3.0f, OBJ_DEPTH, 1.0f);
+float rotation = 0.0f;
+
+
 /* report GL errors, if any, to stderr */
 void checkError(const char* functionName)
 {
@@ -174,6 +181,10 @@ void initShader(void)
 	pinkShader.InitializeFromFile("shaders/phong.vert", "shaders/pink.frag");
 	pinkShader.AddAttribute("vertexPosition");
 	pinkShader.AddAttribute("vertexNormal");
+
+	shader.InitializeFromFile("shaders/phong.vert", "shaders/phong.frag");
+	shader.AddAttribute("vertexPosition");
+	shader.AddAttribute("vertexNormal");
 
 	checkError("initShader");
 }
@@ -753,6 +764,26 @@ void display(void)
 
 		eye = center - cameraDistance * cameraForward;
 		view = lookAt(vec3(eye), vec3(center), vec3(cameraUp));
+		/*
+		glm::vec4 spotModel = glm::vec4(3.0, 2.0, 2.0, 4.0) * glm::rotate(-90.0f, 0.0f, 1.0f, 0.0f);
+		rotation += 0.05f; // Update rotation angle if rotation is enabled.
+
+		glm::vec4 lightPos = glm::rotate(rotation,0.0f, 0.0f, 1.0f) * lightPosition;
+		
+		shader.Activate(); // Bind shader.
+		shader.SetUniform("lightPosition", view * lightPos);
+		shader.SetUniform("lightDiffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		shader.SetUniform("lightSpecular", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		shader.SetUniform("lightAmbient", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		shader.SetUniform("cuttoffAngle", 30.0f);
+
+		cylinder->setOverrideDiffuseMaterial(glm::vec4(1.0, 0.0, 0.0, 1.0));
+		cylinder->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+		cylinder->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		cylinder->setOverrideSpecularShininessMaterial(90.0f);
+		cylinder->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+		cylinder->render(view * glm::translate(0.0f, 12.0f, OBJ_DEPTH + 3) * glm::rotate(0.0f, 0.0f, 0.0f, 1.0f), projection);
+		*/
 
 		detectPellets("pacman", pacManXPos, pacManYPos);
 		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
@@ -765,6 +796,7 @@ void display(void)
 		ghostAI("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos, ghost3CurDir, ghost3NextDir);
 		ghostAI("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos, ghost4CurDir, ghost4NextDir);
 
+		
 		pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection);
 		redGhost->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
 		cyanGhost->render(view * translate(vec3(ghost2XPos, ghost2YPos, OBJ_DEPTH)) * rotate(ghost2Rot, 0.0f, 0.0f, 1.0f), projection);
@@ -808,7 +840,39 @@ void display(void)
 	else {
 		view = lookAt(vec3(vec4(pacManXPos, pacManYPos, OBJ_DEPTH,0) - (rotate(pacManRot, 0.f, 0.f, 1.f) *
 			vec4(-1, 0, 0, 0) * 10) + glm::vec4(0.0f, 0.f, 10, 0.f)), vec3(pacManXPos, pacManYPos, OBJ_DEPTH), vec3(cameraUpThreeD));
+		
 
+		glm::vec4 spotModel = glm::vec4(0.0f, 5.0f, OBJ_DEPTH, 0.0f) * glm::rotate(0.0f, 90.0f, 1.0f, 0.0f);
+		rotation += 0.05f; // Update rotation angle if rotation is enabled.
+
+		glm::vec4 lightPos = glm::rotate(rotation, 0.0f, 0.0f, 1.0f) * lightPosition;
+		
+		shader.Activate(); // Bind shader.
+		shader.SetUniform("lightPosition", view * lightPos);
+		shader.SetUniform("lightDiffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		shader.SetUniform("lightSpecular", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		shader.SetUniform("lightAmbient", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		shader.SetUniform("cuttoffAngle", 30.0f);
+
+		shader.SetUniform("spotlightPosition", spotlightPosition);
+		shader.SetUniform("spotlightDirection", glm::vec4(0.0, -1.0, 0.0, 0.0));
+		shader.SetUniform("spotlightDiffuse", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		shader.SetUniform("spotlightSpecular", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		shader.SetUniform("spotlightAmbient", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		shader.SetUniform("cuttoffAngle", 40.0f);
+	
+
+		cylinder->setOverrideDiffuseMaterial(glm::vec4(1.0, 0.0, 0.0, 1.0));
+		cylinder->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+		cylinder->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		cylinder->setOverrideSpecularShininessMaterial(90.0f);
+		cylinder->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+		cylinder->render(glm::translate(0.0f, 5.0f, OBJ_DEPTH), projection);
+		
+
+
+
+		
 		detectPellets("pacman", pacManXPos, pacManYPos);
 		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
 		
@@ -861,6 +925,10 @@ void display(void)
 		ghost3YPos += ghost3YSpeed;
 		ghost4XPos += ghost4XSpeed;
 		ghost4YPos += ghost4YSpeed;
+
+	
+
+		
 	}
 
 	glColor3f(0.0, 1.0, 0.0);
@@ -1076,6 +1144,7 @@ int main(int argc, char** argv)
 	sphere8 = new Model(&yellowShader, "models/sphere.obj");
 	sphere9 = new Model(&yellowShader, "models/sphere.obj");
 
+	cylinder = new Model(&shader, "models/cylinder.obj", "models/");
 
 	// top row
 	std::vector<std::string> directions1 = { "down", "right" };

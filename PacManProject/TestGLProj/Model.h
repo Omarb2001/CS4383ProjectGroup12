@@ -28,8 +28,18 @@ public:
 	Model(Shader* shader, const char* filename, const char* materialPath = NULL);
 	~Model(void) {} // default destructor
 	void render(glm::mat4 ModelView, glm::mat4 Projection); // render the model
+	void setOverrideDiffuseMaterial(glm::vec4 color);
+	void setOverrideSpecularMaterial(glm::vec4 color);
+	void setOverrideSpecularShininessMaterial(float shine);
+	void setOverrideAmbientMaterial(glm::vec4 color);
+	void setOverrideEmissiveMaterial(glm::vec4 color);
 
 private:
+	glm::vec4 diffuseOverride;
+	glm::vec4 specularOverride;
+	float shininessOverride;
+	glm::vec4 ambientOverride;
+	glm::vec4 emissiveOverride;
 	Shader* m_shader; // shader program
 	std::vector<tinyobj::shape_t> shapes; //a list of meshes and their respective materials
 	std::vector<GLuint> m_VBO;// vertex buffer IDs, each corresponding to a shape

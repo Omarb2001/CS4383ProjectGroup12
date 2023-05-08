@@ -4,6 +4,7 @@
 Model::Model(Shader* shader, const char* filename, const char* materialPath)
 {
 	m_shader = shader;
+	shininessOverride = 1;
 	tinyobj::LoadObj(shapes, filename, materialPath);
 	for (int i = 0; i < shapes.size(); i++) {
 		m_VBO.push_back(0);
@@ -21,6 +22,12 @@ Model::Model(Shader* shader, const char* filename, const char* materialPath)
 
 }
 
+void  Model::setOverrideDiffuseMaterial(glm::vec4 color) { diffuseOverride = glm::vec4(color); }
+void  Model::setOverrideSpecularMaterial(glm::vec4 color) { specularOverride = glm::vec4(color); }
+void  Model::setOverrideSpecularShininessMaterial(float shine) { shininessOverride = shine; }
+void  Model::setOverrideAmbientMaterial(glm::vec4 color) { ambientOverride = glm::vec4(color); }
+void  Model::setOverrideEmissiveMaterial(glm::vec4 color) { emissiveOverride = glm::vec4(color); }
+
 
 /*
 Render the mesh to the screen
@@ -36,7 +43,13 @@ void Model::render(glm::mat4 ModelView, glm::mat4 Projection) {
 	m_shader->SetUniform("ModelView", ModelView);  // send modelview to vertex shader
 	m_shader->SetUniform("lightPosition", glm::vec4(1.0, 0.0, 0.0, 1.0)); // send light position to vertex shader
 
+
 	for (int i = 0; i < shapes.size(); i++) {
+		m_shader->SetUniform("surfaceDiffuse", diffuseOverride);
+		m_shader->SetUniform("surfaceSpecular", specularOverride);
+		m_shader->SetUniform("surfaceAmbient", ambientOverride);
+		m_shader->SetUniform("shininess", shininessOverride);
+		m_shader->SetUniform("surfaceEmissive", emissiveOverride);
 		glBindBuffer(GL_ARRAY_BUFFER, m_VBO[i]); // Bind VBO.
 		glEnableVertexAttribArray((*m_shader)["vertexPosition"]); // Enable vertex attribute.
 		glVertexAttribPointer((*m_shader)["vertexPosition"], 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0); // Attribute pointer.
