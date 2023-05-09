@@ -39,6 +39,7 @@ void main()
     E = -normalize(eyePosition.xyz);
     H = normalize(L + E);
 
+   
 
 }
 

@@ -143,7 +143,7 @@ vec3 pelletLoc3[NUMPELLETS];
 int renderPellets[NUMPELLETS];
 
 glm::vec4 lightPosition = glm::vec4(0.0f, 12.0f, OBJ_DEPTH + 3, 1.0f);
-glm::vec4 spotlightPosition = glm::vec4(0.0f, 3.0f, OBJ_DEPTH, 1.0f);
+glm::vec4 spotlightPosition = glm::vec4(0.0f, 5.0f, OBJ_DEPTH + 6, 1.0f);
 float rotation = 0.0f;
 
 
@@ -764,27 +764,7 @@ void display(void)
 
 		eye = center - cameraDistance * cameraForward;
 		view = lookAt(vec3(eye), vec3(center), vec3(cameraUp));
-		/*
-		glm::vec4 spotModel = glm::vec4(3.0, 2.0, 2.0, 4.0) * glm::rotate(-90.0f, 0.0f, 1.0f, 0.0f);
-		rotation += 0.05f; // Update rotation angle if rotation is enabled.
-
-		glm::vec4 lightPos = glm::rotate(rotation,0.0f, 0.0f, 1.0f) * lightPosition;
 		
-		shader.Activate(); // Bind shader.
-		shader.SetUniform("lightPosition", view * lightPos);
-		shader.SetUniform("lightDiffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		shader.SetUniform("lightSpecular", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		shader.SetUniform("lightAmbient", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		shader.SetUniform("cuttoffAngle", 30.0f);
-
-		cylinder->setOverrideDiffuseMaterial(glm::vec4(1.0, 0.0, 0.0, 1.0));
-		cylinder->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
-		cylinder->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		cylinder->setOverrideSpecularShininessMaterial(90.0f);
-		cylinder->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
-		cylinder->render(view * glm::translate(0.0f, 12.0f, OBJ_DEPTH + 3) * glm::rotate(0.0f, 0.0f, 0.0f, 1.0f), projection);
-		*/
-
 		detectPellets("pacman", pacManXPos, pacManYPos);
 		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
 		gameOver("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
@@ -796,13 +776,42 @@ void display(void)
 		ghostAI("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos, ghost3CurDir, ghost3NextDir);
 		ghostAI("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos, ghost4CurDir, ghost4NextDir);
 
-		
+
+		glm::vec4 lightPos = glm::rotate(rotation, 0.0f, 0.0f, 1.0f) * lightPosition;
+		shader.Activate(); // Bind shader.
+		shader.SetUniform("lightPosition", view * lightPos);
+		shader.SetUniform("lightDiffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		shader.SetUniform("lightSpecular", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		shader.SetUniform("lightAmbient", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		shader.SetUniform("cuttoffAngle", 30.0f);
+
+		shader.SetUniform("spotlightPosition", spotlightPosition);
+		shader.SetUniform("spotlightDirection", glm::vec4(0.0, 1.0, 0.0, 0.0));
+		shader.SetUniform("spotlightDiffuse", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		shader.SetUniform("spotlightSpecular", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		shader.SetUniform("spotlightAmbient", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		shader.SetUniform("cuttoffAngle", 40.0f);
+
+
+
+		pacMan->setOverrideDiffuseMaterial(glm::vec4(1.0, 1.0, 0.0, 1.0));
+		pacMan->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+		pacMan->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		pacMan->setOverrideSpecularShininessMaterial(90.0f);
+		pacMan->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
 		pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection);
+
 		redGhost->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
 		cyanGhost->render(view * translate(vec3(ghost2XPos, ghost2YPos, OBJ_DEPTH)) * rotate(ghost2Rot, 0.0f, 0.0f, 1.0f), projection);
 		orangeGhost->render(view * translate(vec3(ghost3XPos, ghost3YPos, OBJ_DEPTH)) * rotate(ghost3Rot, 0.0f, 0.0f, 1.0f), projection);
 		pinkGhost->render(view * translate(vec3(ghost4XPos, ghost4YPos, OBJ_DEPTH)) * rotate(ghost4Rot, 0.0f, 0.0f, 1.0f), projection);
 
+
+		maze0->setOverrideDiffuseMaterial(glm::vec4(0.0, 0.0, 1.0, 1.0));
+		maze0->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+		maze0->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		maze0->setOverrideSpecularShininessMaterial(90.0f);
+		maze0->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
 		maze0->render(view * translate(mazePos), projection);
 
 		if (renderPellets[1] == 0)
@@ -855,7 +864,7 @@ void display(void)
 		shader.SetUniform("cuttoffAngle", 30.0f);
 
 		shader.SetUniform("spotlightPosition", spotlightPosition);
-		shader.SetUniform("spotlightDirection", glm::vec4(0.0, -1.0, 0.0, 0.0));
+		shader.SetUniform("spotlightDirection", glm::vec4(0.0, 1.0, 0.0, 0.0));
 		shader.SetUniform("spotlightDiffuse", glm::vec4(1.0, 1.0, 1.0, 1.0));
 		shader.SetUniform("spotlightSpecular", glm::vec4(1.0, 1.0, 1.0, 1.0));
 		shader.SetUniform("spotlightAmbient", glm::vec4(1.0, 1.0, 1.0, 1.0));
@@ -869,10 +878,6 @@ void display(void)
 		cylinder->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
 		cylinder->render(glm::translate(0.0f, 5.0f, OBJ_DEPTH), projection);
 		
-
-
-
-		
 		detectPellets("pacman", pacManXPos, pacManYPos);
 		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
 		
@@ -885,6 +890,12 @@ void display(void)
 		ghostAI("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos, ghost3CurDir, ghost3NextDir);
 		ghostAI("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos, ghost4CurDir, ghost4NextDir);
 
+
+		pacMan->setOverrideDiffuseMaterial(glm::vec4(1.0, 1.0, 0.0, 1.0));
+		pacMan->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+		pacMan->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		pacMan->setOverrideSpecularShininessMaterial(90.0f);
+		pacMan->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
 		pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection);
 
 		redGhost->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
@@ -892,6 +903,12 @@ void display(void)
 		orangeGhost->render(view * translate(vec3(ghost3XPos, ghost3YPos, OBJ_DEPTH)) * rotate(ghost3Rot, 0.0f, 0.0f, 1.0f), projection);
 		pinkGhost->render(view * translate(vec3(ghost4XPos, ghost4YPos, OBJ_DEPTH)) * rotate(ghost4Rot, 0.0f, 0.0f, 1.0f), projection);
 		
+
+		maze0->setOverrideDiffuseMaterial(glm::vec4(0.0, 0.0, 1.0, 1.0));
+		maze0->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+		maze0->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		maze0->setOverrideSpecularShininessMaterial(90.0f);
+		maze0->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
 		maze0->render(view * translate(mazePos), projection);
 
 		if (renderPellets[1] == 0)
@@ -1125,14 +1142,16 @@ int main(int argc, char** argv)
 	glutKeyboardFunc(keyboard);
 	glEnable(GL_DEPTH_TEST);
 
-	pacMan = new Model(&yellowShader, "models/sphere.obj");
+	pacMan = new Model(&shader, "models/sphere.obj");
 
 	redGhost = new Model(&redShader, "models/ghost.obj", "models/");
 	cyanGhost = new Model(&cyanShader, "models/ghost.obj", "models/");
 	orangeGhost = new Model(&orangeShader, "models/ghost.obj", "models/");
 	pinkGhost = new Model(&pinkShader, "models/ghost.obj", "models/");
 
-	maze0 = new Model(&blueShader, "models/maze0.obj", "models/");
+	//maze0 = new Model(&blueShader, "models/maze0.obj", "models/");
+
+	maze0 = new Model(&shader, "models/maze0.obj", "models/");
 
 	sphere1 = new Model(&yellowShader, "models/sphere.obj");
 	sphere2 = new Model(&yellowShader, "models/sphere.obj");
