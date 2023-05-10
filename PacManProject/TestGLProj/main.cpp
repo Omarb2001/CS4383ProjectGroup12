@@ -58,7 +58,7 @@ glm::mat4 view; // where the camera is looking
 glm::mat4 model; // where the model (i.e., the myModel) is located wrt the camera
 
 float OBJ_DEPTH = -20.0f;
-float PAC_MAN_SPEED = 0.075f;
+float PAC_MAN_SPEED = 0.055f;
 float GHOST_SPEED = 0.05f;
 float SLOW_GHOSTS = 0.05f;;
 
@@ -594,13 +594,17 @@ void detectPellets(std::string character, float objXPos, float objYPos) {
 			score += 10;
 		}
 	}
+
+	if (score == 90) {
+		gameOverInt = 1000;
+	}
 }
 
 //Check if game over
 void gameOver(std::string character, std::string character1, float objXPos, float objYPos, float obj1XPos, float obj1YPos) {
 	vec3 objPos = vec3(objXPos, objYPos, OBJ_DEPTH);
 	vec3 obj1Pos = vec3(obj1XPos, obj1YPos, OBJ_DEPTH);
-	if (gameOverInt == 0) {
+	
 		if (character1 == "ghost1") {
 			float enemy1_dist = glm::distance(objPos, obj1Pos);
 			//check if close enough to ghost1
@@ -629,13 +633,13 @@ void gameOver(std::string character, std::string character1, float objXPos, floa
 				gameOverInt++;
 			}
 		}
-	}
+	
 }
 
 void ghostAI(std::string character, std::string character1, float objXPos, float objYPos, float obj1XPos, float obj1YPos, std::string objCurDir, std::string objNextDir) {
 	vec3 objPos = vec3(objXPos, objYPos, OBJ_DEPTH);
 	vec3 obj1Pos = vec3(obj1XPos, obj1YPos, OBJ_DEPTH);
-	if (gameOverInt==0) {
+	
 		for (int i = 0; i < intersections.size(); i++) {
 			Intersection curIntersection = intersections[i];
 			float turn1_dist = glm::distance(obj1Pos, curIntersection.position);
@@ -744,7 +748,6 @@ void ghostAI(std::string character, std::string character1, float objXPos, float
 
 			}
 		}
-	}
 }
 
 
@@ -760,7 +763,7 @@ void display(void)
 
 	// TODO: detect collisions with pellets
 	// TODO: detect collisions with ghosts
-	if (gameOverInt == 0 || (score != 90 && gameOverInt ==0)) {
+	if (gameOverInt <= 200) {
 		if (!ThreeD) {
 
 			eye = center - cameraDistance * cameraForward;
@@ -976,12 +979,12 @@ void display(void)
 
 		//check if ghost touches pacman
 		glColor3f(0.0, 1.0, 0.0);
-		glRasterPos2f(0.7f, 0.9f);
+		glRasterPos2f(0.55f, 0.9f);
 		stringstream strs1;
 		strs1 << gameOverInt;
 		temp = strs1.str();
 		scr_temp = (char*)temp.c_str();
-		string = "game over: ";
+		string = "Time in Contact w/ Ghost: ";
 		i = 5;
 		for (c = string; *c != '\0'; c++) {
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
@@ -1241,7 +1244,7 @@ void display(void)
 		glColor3f(1.0, 1.0, 0.0);
 		glRasterPos2f(-0.1f, 0.85f);
 		char* title = "Game Over";
-		if (score == 90) {
+		if (gameOverInt == 1000) {
 			title = "YOU WIN!!!";
 		}
 		for (c = title; *c != '\0'; c++) {
@@ -1256,12 +1259,12 @@ void display(void)
 
 		//check if ghost touches pacman
 		glColor3f(0.0, 1.0, 0.0);
-		glRasterPos2f(0.7f, 0.9f);
+		glRasterPos2f(0.55f, 0.9f);
 		stringstream strs1;
 		strs1 << gameOverInt;
 		temp = strs1.str();
 		scr_temp = (char*)temp.c_str();
-		string = "game over: ";
+		string = "Time in Contact w/ Ghost: ";
 		i = 5;
 		for (c = string; *c != '\0'; c++) {
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
@@ -1298,6 +1301,11 @@ void display(void)
 			renderPellets[i] = 0;
 		}
 		score = 0;
+		freezeCharacter("pacman");
+		freezeCharacter("ghost1");
+		freezeCharacter("ghost2");
+		freezeCharacter("ghost3");
+		freezeCharacter("ghost4");
 	}
 
 	
@@ -1415,8 +1423,8 @@ void keyboard(unsigned char key, int x, int y)
 		}
 		break;
 	case 'r':
-		if (gameOverInt!=0) {
-			gameOverInt--;
+		if (gameOverInt>199) {
+			gameOverInt=0;
 		}
 		break;
 	case 't':
