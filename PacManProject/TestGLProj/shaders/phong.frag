@@ -1,4 +1,4 @@
- #version 440 core
+ #version 330 core
  in vec3 N;
  in vec3 L;
  in vec3 E;

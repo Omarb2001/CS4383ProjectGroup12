@@ -1,21 +1,8 @@
 ﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
-  tiny_obj_loader.cpp
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\tiny_obj_loader.cpp(173,3): warning C4018: '>': signed/unsigned mismatch
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\tiny_obj_loader.cpp(340,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\tiny_obj_loader.cpp(571,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\tiny_obj_loader.cpp(587,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\tiny_obj_loader.cpp(643,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  Shader.cpp
-  Model.cpp
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\Model.cpp(9,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\Model.cpp(47,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\Model.cpp(69,20): warning C4018: '<': signed/unsigned mismatch
   main.cpp
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\include\glm\gtx\string_cast.inl(30,4): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\main.cpp(550,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\main.cpp(562,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\TestGLProj\main.cpp(639,20): warning C4018: '<': signed/unsigned mismatch
-  Intersection.cpp
-  Generating Code...
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\include\glm\gtx\string_cast.inl(30,4): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(550,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(562,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\TestGLProj\main.cpp(639,20): warning C4018: '<': signed/unsigned mismatch
 Intersection.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
-  TestGLProj.vcxproj -> C:\Users\12107\Downloads\CS4383ProjectGroup12-bhavya\PacManProject\Debug\TestGLProj.exe
+  TestGLProj.vcxproj -> C:\Users\Jeffrey Cordes\Documents\ComputerGraphics\CS4383ProjectGroup12\PacManProject\Debug\TestGLProj.exe

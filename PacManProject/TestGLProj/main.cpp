@@ -876,7 +876,7 @@ void display(void)
 		cylinder->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		cylinder->setOverrideSpecularShininessMaterial(90.0f);
 		cylinder->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
-		cylinder->render(glm::translate(0.0f, 5.0f, OBJ_DEPTH), projection);
+		//cylinder->render(glm::translate(0.0f, 5.0f, OBJ_DEPTH), projection);
 		
 		detectPellets("pacman", pacManXPos, pacManYPos);
 		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
