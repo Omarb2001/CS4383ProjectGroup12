@@ -635,113 +635,114 @@ void gameOver(std::string character, std::string character1, float objXPos, floa
 void ghostAI(std::string character, std::string character1, float objXPos, float objYPos, float obj1XPos, float obj1YPos, std::string objCurDir, std::string objNextDir) {
 	vec3 objPos = vec3(objXPos, objYPos, OBJ_DEPTH);
 	vec3 obj1Pos = vec3(obj1XPos, obj1YPos, OBJ_DEPTH);
-	
-	for (int i = 0; i < intersections.size(); i++) {
-		Intersection curIntersection = intersections[i];
-		float turn1_dist = glm::distance(obj1Pos, curIntersection.position);
-		if (character1 == "ghost1") {
-			if (turn1_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
-				std::vector<std::string> curDirs1 = curIntersection.directions;
-				if (contains(curDirs1, objNextDir)) {
-					adjustCharacter(character1, curIntersection);
-					turnCharacter(character1);
-					isFrozen = 0;
-					int possibleTurns1 = curDirs1.size();
-					srand((unsigned)time(0));
-					int index1;
-					index1 = (rand() % possibleTurns1);
-					ghost1NextDir = curDirs1[index1];
-				}
-				else {
-					// if we try to turn into a wall, the character should not be translated
-					freezeCharacter(character1);
-					int possibleTurns1 = curDirs1.size();
-					srand((unsigned)time(0));
-					int index1;
-					index1 = (rand() % possibleTurns1);
-					ghost1NextDir = curDirs1[index1];
-					break;
-				}
-			}
-		}
-		else if (character1 == "ghost2") {
-			float turn2_dist = glm::distance(obj1Pos, curIntersection.position);
-			if (turn2_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
-				std::vector<std::string> curDirs2 = curIntersection.directions;
-				if (contains(curDirs2, objNextDir)) {
-					adjustCharacter(character1, curIntersection);
-					turnCharacter(character1);
-					isFrozen = 0;
-					int possibleTurns2 = curDirs2.size(); 
-					srand((unsigned)time(0));
-					int index2;
-					index2 = (rand() % possibleTurns2);
-					ghost2NextDir = curDirs2[index2];
-				}
-				else {
-					// if we try to turn into a wall, the character should not be translated
-					freezeCharacter(character1);
-					int possibleTurns2 = curDirs2.size();
-					srand((unsigned)time(0));
-					int index2;
-					index2 = (rand() % possibleTurns2);
-					ghost2NextDir = curDirs2[index2];
-					break;
+	if (gameOverInt==0) {
+		for (int i = 0; i < intersections.size(); i++) {
+			Intersection curIntersection = intersections[i];
+			float turn1_dist = glm::distance(obj1Pos, curIntersection.position);
+			if (character1 == "ghost1") {
+				if (turn1_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
+					std::vector<std::string> curDirs1 = curIntersection.directions;
+					if (contains(curDirs1, objNextDir)) {
+						adjustCharacter(character1, curIntersection);
+						turnCharacter(character1);
+						isFrozen = 0;
+						int possibleTurns1 = curDirs1.size();
+						srand((unsigned)time(0));
+						int index1;
+						index1 = (rand() % possibleTurns1);
+						ghost1NextDir = curDirs1[index1];
+					}
+					else {
+						// if we try to turn into a wall, the character should not be translated
+						freezeCharacter(character1);
+						int possibleTurns1 = curDirs1.size();
+						srand((unsigned)time(0));
+						int index1;
+						index1 = (rand() % possibleTurns1);
+						ghost1NextDir = curDirs1[index1];
+						break;
+					}
 				}
 			}
-		}
-		else if (character1 == "ghost3") {
-			float turn3_dist = glm::distance(obj1Pos, curIntersection.position);
-			if (turn3_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
-				std::vector<std::string> curDirs3 = curIntersection.directions;
-				if (contains(curDirs3, objNextDir)) {
-					adjustCharacter(character1, curIntersection);
-					turnCharacter(character1);
-					isFrozen = 0;
-					int possibleTurns3 = curDirs3.size(); 
-					srand((unsigned)time(0));
-					int index3;
-					index3 = (rand() * 3 % possibleTurns3);
-					ghost3NextDir = curDirs3[index3];
-				}
-				else {
-					// if we try to turn into a wall, the character should not be translated
-					freezeCharacter(character1);
-					int possibleTurns3 = curDirs3.size();
-					srand((unsigned)time(0));
-					int index3;
-					index3 = (rand() * 3 % possibleTurns3);
-					ghost3NextDir = curDirs3[index3];
-					break;
-				}
-			}
-		}
-		else if (character1 == "ghost4") {
-			float turn4_dist = glm::distance(obj1Pos, curIntersection.position);
-			if (turn4_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
-				std::vector<std::string> curDirs4 = curIntersection.directions;
-				if (contains(curDirs4, objNextDir)) {
-					adjustCharacter(character1, curIntersection);
-					turnCharacter(character1);
-					isFrozen = 0;
-					int possibleTurns4 = curDirs4.size(); 
-					srand((unsigned)time(0));
-					int index4;
-					index4 = (rand() * 2 % possibleTurns4);
-					ghost4NextDir = curDirs4[index4];
-				}
-				else {
-					// if we try to turn into a wall, the character should not be translated
-					freezeCharacter(character1);
-					int possibleTurns4 = curDirs4.size();
-					srand((unsigned)time(0));
-					int index4;
-					index4 = (rand() * 2 % possibleTurns4);
-					ghost4NextDir = curDirs4[index4];
-					break;
+			else if (character1 == "ghost2") {
+				float turn2_dist = glm::distance(obj1Pos, curIntersection.position);
+				if (turn2_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
+					std::vector<std::string> curDirs2 = curIntersection.directions;
+					if (contains(curDirs2, objNextDir)) {
+						adjustCharacter(character1, curIntersection);
+						turnCharacter(character1);
+						isFrozen = 0;
+						int possibleTurns2 = curDirs2.size();
+						srand((unsigned)time(0));
+						int index2;
+						index2 = (rand() % possibleTurns2);
+						ghost2NextDir = curDirs2[index2];
+					}
+					else {
+						// if we try to turn into a wall, the character should not be translated
+						freezeCharacter(character1);
+						int possibleTurns2 = curDirs2.size();
+						srand((unsigned)time(0));
+						int index2;
+						index2 = (rand() % possibleTurns2);
+						ghost2NextDir = curDirs2[index2];
+						break;
+					}
 				}
 			}
-			
+			else if (character1 == "ghost3") {
+				float turn3_dist = glm::distance(obj1Pos, curIntersection.position);
+				if (turn3_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
+					std::vector<std::string> curDirs3 = curIntersection.directions;
+					if (contains(curDirs3, objNextDir)) {
+						adjustCharacter(character1, curIntersection);
+						turnCharacter(character1);
+						isFrozen = 0;
+						int possibleTurns3 = curDirs3.size();
+						srand((unsigned)time(0));
+						int index3;
+						index3 = (rand() * 3 % possibleTurns3);
+						ghost3NextDir = curDirs3[index3];
+					}
+					else {
+						// if we try to turn into a wall, the character should not be translated
+						freezeCharacter(character1);
+						int possibleTurns3 = curDirs3.size();
+						srand((unsigned)time(0));
+						int index3;
+						index3 = (rand() * 3 % possibleTurns3);
+						ghost3NextDir = curDirs3[index3];
+						break;
+					}
+				}
+			}
+			else if (character1 == "ghost4") {
+				float turn4_dist = glm::distance(obj1Pos, curIntersection.position);
+				if (turn4_dist < TURN_DETECTION_DISTANCE) { // check if we're close enough to the intersection to turn
+					std::vector<std::string> curDirs4 = curIntersection.directions;
+					if (contains(curDirs4, objNextDir)) {
+						adjustCharacter(character1, curIntersection);
+						turnCharacter(character1);
+						isFrozen = 0;
+						int possibleTurns4 = curDirs4.size();
+						srand((unsigned)time(0));
+						int index4;
+						index4 = (rand() * 2 % possibleTurns4);
+						ghost4NextDir = curDirs4[index4];
+					}
+					else {
+						// if we try to turn into a wall, the character should not be translated
+						freezeCharacter(character1);
+						int possibleTurns4 = curDirs4.size();
+						srand((unsigned)time(0));
+						int index4;
+						index4 = (rand() * 2 % possibleTurns4);
+						ghost4NextDir = curDirs4[index4];
+						break;
+					}
+				}
+
+			}
 		}
 	}
 }
@@ -759,103 +760,363 @@ void display(void)
 
 	// TODO: detect collisions with pellets
 	// TODO: detect collisions with ghosts
+	if (gameOverInt == 0 || (score != 90 && gameOverInt ==0)) {
+		if (!ThreeD) {
 
-	if (!ThreeD) {
+			eye = center - cameraDistance * cameraForward;
+			view = lookAt(vec3(eye), vec3(center), vec3(cameraUp));
 
-		eye = center - cameraDistance * cameraForward;
-		view = lookAt(vec3(eye), vec3(center), vec3(cameraUp));
-		
-		detectPellets("pacman", pacManXPos, pacManYPos);
-		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
-		gameOver("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
-		gameOver("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos);
-		gameOver("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos);
-		gameOver("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos);
-		ghostAI("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos, ghost1CurDir, ghost1NextDir);
-		ghostAI("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos, ghost2CurDir, ghost2NextDir);
-		ghostAI("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos, ghost3CurDir, ghost3NextDir);
-		ghostAI("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos, ghost4CurDir, ghost4NextDir);
-
-
-		glm::vec4 lightPos = glm::rotate(rotation, 0.0f, 0.0f, 1.0f) * lightPosition;
-		shader.Activate(); // Bind shader.
-		shader.SetUniform("lightPosition", view * lightPos);
-		shader.SetUniform("lightDiffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		shader.SetUniform("lightSpecular", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		shader.SetUniform("lightAmbient", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		shader.SetUniform("cuttoffAngle", 30.0f);
-
-		shader.SetUniform("spotlightPosition", spotlightPosition);
-		shader.SetUniform("spotlightDirection", glm::vec4(0.0, 1.0, 0.0, 0.0));
-		shader.SetUniform("spotlightDiffuse", glm::vec4(1.0, 1.0, 1.0, 1.0));
-		shader.SetUniform("spotlightSpecular", glm::vec4(1.0, 1.0, 1.0, 1.0));
-		shader.SetUniform("spotlightAmbient", glm::vec4(1.0, 1.0, 1.0, 1.0));
-		shader.SetUniform("cuttoffAngle", 40.0f);
+			detectPellets("pacman", pacManXPos, pacManYPos);
+			detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
+			gameOver("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
+			gameOver("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos);
+			gameOver("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos);
+			gameOver("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos);
+			ghostAI("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos, ghost1CurDir, ghost1NextDir);
+			ghostAI("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos, ghost2CurDir, ghost2NextDir);
+			ghostAI("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos, ghost3CurDir, ghost3NextDir);
+			ghostAI("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos, ghost4CurDir, ghost4NextDir);
 
 
+			glm::vec4 lightPos = glm::rotate(rotation, 0.0f, 0.0f, 1.0f) * lightPosition;
+			shader.Activate(); // Bind shader.
+			shader.SetUniform("lightPosition", view * lightPos);
+			shader.SetUniform("lightDiffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			shader.SetUniform("lightSpecular", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			shader.SetUniform("lightAmbient", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			shader.SetUniform("cuttoffAngle", 30.0f);
 
-		pacMan->setOverrideDiffuseMaterial(glm::vec4(1.0, 1.0, 0.0, 1.0));
-		pacMan->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
-		pacMan->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		pacMan->setOverrideSpecularShininessMaterial(90.0f);
-		pacMan->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
-		pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection);
-
-		redGhost->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
-		cyanGhost->render(view * translate(vec3(ghost2XPos, ghost2YPos, OBJ_DEPTH)) * rotate(ghost2Rot, 0.0f, 0.0f, 1.0f), projection);
-		orangeGhost->render(view * translate(vec3(ghost3XPos, ghost3YPos, OBJ_DEPTH)) * rotate(ghost3Rot, 0.0f, 0.0f, 1.0f), projection);
-		pinkGhost->render(view * translate(vec3(ghost4XPos, ghost4YPos, OBJ_DEPTH)) * rotate(ghost4Rot, 0.0f, 0.0f, 1.0f), projection);
+			shader.SetUniform("spotlightPosition", spotlightPosition);
+			shader.SetUniform("spotlightDirection", glm::vec4(0.0, 1.0, 0.0, 0.0));
+			shader.SetUniform("spotlightDiffuse", glm::vec4(1.0, 1.0, 1.0, 1.0));
+			shader.SetUniform("spotlightSpecular", glm::vec4(1.0, 1.0, 1.0, 1.0));
+			shader.SetUniform("spotlightAmbient", glm::vec4(1.0, 1.0, 1.0, 1.0));
+			shader.SetUniform("cuttoffAngle", 40.0f);
 
 
-		maze0->setOverrideDiffuseMaterial(glm::vec4(0.0, 0.0, 1.0, 1.0));
-		maze0->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
-		maze0->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		maze0->setOverrideSpecularShininessMaterial(90.0f);
-		maze0->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
-		maze0->render(view * translate(mazePos), projection);
 
-		if (renderPellets[1] == 0)
-			sphere1->render(view * translate(pelletLoc3[1]) * scale(0.5f, 0.5f, 0.5f), projection);
-		if (renderPellets[2] == 0)
-			sphere2->render(view * translate(pelletLoc3[2]) * scale(0.5f, 0.5f, 0.5f), projection);
-		if (renderPellets[3] == 0)
-			sphere3->render(view * translate(pelletLoc3[3]) * scale(0.5f, 0.5f, 0.5f), projection);
+			pacMan->setOverrideDiffuseMaterial(glm::vec4(1.0, 1.0, 0.0, 1.0));
+			pacMan->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+			pacMan->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+			pacMan->setOverrideSpecularShininessMaterial(90.0f);
+			pacMan->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+			pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection);
 
-		if (renderPellets[4] == 0)
-			sphere4->render(view * translate(pelletLoc3[4]) * scale(0.5f, 0.5f, 0.5f), projection);
-		if (renderPellets[5] == 0)
-			sphere5->render(view * translate(pelletLoc3[5]) * scale(0.5f, 0.5f, 0.5f), projection);
-		if (renderPellets[6] == 0)
-			sphere6->render(view * translate(pelletLoc3[6]) * scale(0.5f, 0.5f, 0.5f), projection);
+			redGhost->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
+			cyanGhost->render(view * translate(vec3(ghost2XPos, ghost2YPos, OBJ_DEPTH)) * rotate(ghost2Rot, 0.0f, 0.0f, 1.0f), projection);
+			orangeGhost->render(view * translate(vec3(ghost3XPos, ghost3YPos, OBJ_DEPTH)) * rotate(ghost3Rot, 0.0f, 0.0f, 1.0f), projection);
+			pinkGhost->render(view * translate(vec3(ghost4XPos, ghost4YPos, OBJ_DEPTH)) * rotate(ghost4Rot, 0.0f, 0.0f, 1.0f), projection);
 
-		if (renderPellets[7] == 0)
-			sphere7->render(view * translate(pelletLoc3[7]) * scale(0.5f, 0.5f, 0.5f), projection);
-		if (renderPellets[8] == 0)
-			sphere8->render(view * translate(pelletLoc3[8]) * scale(0.5f, 0.5f, 0.5f), projection);
-		if (renderPellets[9] == 0)
-			sphere9->render(view * translate(pelletLoc3[9]) * scale(0.5f, 0.5f, 0.5f), projection);
 
-		pacManXPos += pacManXSpeed;
-		pacManYPos += pacManYSpeed;
-		ghost1XPos += ghost1XSpeed;
-		ghost1YPos += ghost1YSpeed;
-		ghost2XPos += ghost2XSpeed;
-		ghost2YPos += ghost2YSpeed;
-		ghost3XPos += ghost3XSpeed;
-		ghost3YPos += ghost3YSpeed;
-		ghost4XPos += ghost4XSpeed;
-		ghost4YPos += ghost4YSpeed;
+			maze0->setOverrideDiffuseMaterial(glm::vec4(0.0, 0.0, 1.0, 1.0));
+			maze0->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+			maze0->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+			maze0->setOverrideSpecularShininessMaterial(90.0f);
+			maze0->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+			maze0->render(view * translate(mazePos), projection);
+
+			if (renderPellets[1] == 0)
+				sphere1->render(view * translate(pelletLoc3[1]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[2] == 0)
+				sphere2->render(view * translate(pelletLoc3[2]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[3] == 0)
+				sphere3->render(view * translate(pelletLoc3[3]) * scale(0.5f, 0.5f, 0.5f), projection);
+
+			if (renderPellets[4] == 0)
+				sphere4->render(view * translate(pelletLoc3[4]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[5] == 0)
+				sphere5->render(view * translate(pelletLoc3[5]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[6] == 0)
+				sphere6->render(view * translate(pelletLoc3[6]) * scale(0.5f, 0.5f, 0.5f), projection);
+
+			if (renderPellets[7] == 0)
+				sphere7->render(view * translate(pelletLoc3[7]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[8] == 0)
+				sphere8->render(view * translate(pelletLoc3[8]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[9] == 0)
+				sphere9->render(view * translate(pelletLoc3[9]) * scale(0.5f, 0.5f, 0.5f), projection);
+
+			pacManXPos += pacManXSpeed;
+			pacManYPos += pacManYSpeed;
+			ghost1XPos += ghost1XSpeed;
+			ghost1YPos += ghost1YSpeed;
+			ghost2XPos += ghost2XSpeed;
+			ghost2YPos += ghost2YSpeed;
+			ghost3XPos += ghost3XSpeed;
+			ghost3YPos += ghost3YSpeed;
+			ghost4XPos += ghost4XSpeed;
+			ghost4YPos += ghost4YSpeed;
+		}
+		else {
+			view = lookAt(vec3(vec4(pacManXPos, pacManYPos, OBJ_DEPTH, 0) - (rotate(pacManRot, 0.f, 0.f, 1.f) *
+				vec4(-1, 0, 0, 0) * 10) + glm::vec4(0.0f, 0.f, 10, 0.f)), vec3(pacManXPos, pacManYPos, OBJ_DEPTH), vec3(cameraUpThreeD));
+
+
+			glm::vec4 spotModel = glm::vec4(0.0f, 5.0f, OBJ_DEPTH, 0.0f) * glm::rotate(0.0f, 90.0f, 1.0f, 0.0f);
+			rotation += 0.05f; // Update rotation angle if rotation is enabled.
+
+			glm::vec4 lightPos = glm::rotate(rotation, 0.0f, 0.0f, 1.0f) * lightPosition;
+
+			shader.Activate(); // Bind shader.
+			shader.SetUniform("lightPosition", view * lightPos);
+			shader.SetUniform("lightDiffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			shader.SetUniform("lightSpecular", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			shader.SetUniform("lightAmbient", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			shader.SetUniform("cuttoffAngle", 30.0f);
+
+			shader.SetUniform("spotlightPosition", spotlightPosition);
+			shader.SetUniform("spotlightDirection", glm::vec4(0.0, 1.0, 0.0, 0.0));
+			shader.SetUniform("spotlightDiffuse", glm::vec4(1.0, 1.0, 1.0, 1.0));
+			shader.SetUniform("spotlightSpecular", glm::vec4(1.0, 1.0, 1.0, 1.0));
+			shader.SetUniform("spotlightAmbient", glm::vec4(1.0, 1.0, 1.0, 1.0));
+			shader.SetUniform("cuttoffAngle", 40.0f);
+
+
+			cylinder->setOverrideDiffuseMaterial(glm::vec4(1.0, 0.0, 0.0, 1.0));
+			cylinder->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+			cylinder->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+			cylinder->setOverrideSpecularShininessMaterial(90.0f);
+			cylinder->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+			//cylinder->render(glm::translate(0.0f, 5.0f, OBJ_DEPTH), projection);
+
+			detectPellets("pacman", pacManXPos, pacManYPos);
+			detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
+
+			gameOver("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
+			gameOver("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos);
+			gameOver("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos);
+			gameOver("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos);
+			ghostAI("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos, ghost1CurDir, ghost1NextDir);
+			ghostAI("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos, ghost2CurDir, ghost2NextDir);
+			ghostAI("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos, ghost3CurDir, ghost3NextDir);
+			ghostAI("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos, ghost4CurDir, ghost4NextDir);
+
+
+			pacMan->setOverrideDiffuseMaterial(glm::vec4(1.0, 1.0, 0.0, 1.0));
+			pacMan->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+			pacMan->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+			pacMan->setOverrideSpecularShininessMaterial(90.0f);
+			pacMan->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+			pacMan->render(view * translate(vec3(pacManXPos, pacManYPos, OBJ_DEPTH)) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection);
+
+			redGhost->render(view * translate(vec3(ghost1XPos, ghost1YPos, OBJ_DEPTH)) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
+			cyanGhost->render(view * translate(vec3(ghost2XPos, ghost2YPos, OBJ_DEPTH)) * rotate(ghost2Rot, 0.0f, 0.0f, 1.0f), projection);
+			orangeGhost->render(view * translate(vec3(ghost3XPos, ghost3YPos, OBJ_DEPTH)) * rotate(ghost3Rot, 0.0f, 0.0f, 1.0f), projection);
+			pinkGhost->render(view * translate(vec3(ghost4XPos, ghost4YPos, OBJ_DEPTH)) * rotate(ghost4Rot, 0.0f, 0.0f, 1.0f), projection);
+
+
+			maze0->setOverrideDiffuseMaterial(glm::vec4(0.0, 0.0, 1.0, 1.0));
+			maze0->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+			maze0->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+			maze0->setOverrideSpecularShininessMaterial(90.0f);
+			maze0->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+			maze0->render(view * translate(mazePos), projection);
+
+			if (renderPellets[1] == 0)
+				sphere1->render(view * translate(pelletLoc3[1]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[2] == 0)
+				sphere2->render(view * translate(pelletLoc3[2]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[3] == 0)
+				sphere3->render(view * translate(pelletLoc3[3]) * scale(0.5f, 0.5f, 0.5f), projection);
+
+			if (renderPellets[4] == 0)
+				sphere4->render(view * translate(pelletLoc3[4]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[5] == 0)
+				sphere5->render(view * translate(pelletLoc3[5]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[6] == 0)
+				sphere6->render(view * translate(pelletLoc3[6]) * scale(0.5f, 0.5f, 0.5f), projection);
+
+			if (renderPellets[7] == 0)
+				sphere7->render(view * translate(pelletLoc3[7]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[8] == 0)
+				sphere8->render(view * translate(pelletLoc3[8]) * scale(0.5f, 0.5f, 0.5f), projection);
+			if (renderPellets[9] == 0)
+				sphere9->render(view * translate(pelletLoc3[9]) * scale(0.5f, 0.5f, 0.5f), projection);
+
+			pacManXPos += pacManXSpeed;
+			pacManYPos += pacManYSpeed;
+			ghost1XPos += ghost1XSpeed;
+			ghost1YPos += ghost1YSpeed;
+			ghost2XPos += ghost2XSpeed;
+			ghost2YPos += ghost2YSpeed;
+			ghost3XPos += ghost3XSpeed;
+			ghost3YPos += ghost3YSpeed;
+			ghost4XPos += ghost4XSpeed;
+			ghost4YPos += ghost4YSpeed;
+
+
+
+
+		}
+
+
+		glColor3f(0.0, 1.0, 0.0);
+		glRasterPos2f(-0.97f, 0.9f);
+
+		stringstream strs;
+		strs << score;
+		std::string temp = strs.str();
+		char* scr_temp = (char*)temp.c_str();
+		char* string = "SCORE: ";
+		int i = 3;
+		char* c;
+		for (c = string; *c != '\0'; c++) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		}
+		for (c = scr_temp; *c != '\0'; c++) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		}
+
+		glColor3f(1.0, 1.0, 0.0);
+		glRasterPos2f(-0.1f, 0.85f);
+		char* title = "PAC-MAN";
+		for (c = title; *c != '\0'; c++) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+		}
+
+		//check if ghost touches pacman
+		glColor3f(0.0, 1.0, 0.0);
+		glRasterPos2f(0.7f, 0.9f);
+		stringstream strs1;
+		strs1 << gameOverInt;
+		temp = strs1.str();
+		scr_temp = (char*)temp.c_str();
+		string = "game over: ";
+		i = 5;
+		for (c = string; *c != '\0'; c++) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		}
+		for (c = scr_temp; *c != '\0'; c++) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		}
+		//current dist ghost is from pacman
+		glColor3f(0.0, 1.0, 0.0);
+		glRasterPos2f(0.7f, 0.85f);
+		stringstream strs2;
+		strs2 << ghost3NextDir;
+		temp = strs2.str();
+		scr_temp = (char*)temp.c_str();
+		string = "ghost1NextDir: ";
+		i = 5;
+		//for (c = string; *c != '\0'; c++) {
+		//	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		//}
+		//for (c = scr_temp; *c != '\0'; c++) {
+		//	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		//}
+		glutSwapBuffers(); // Swap the buffers.
+		checkError("display");
 	}
 	else {
-		view = lookAt(vec3(vec4(pacManXPos, pacManYPos, OBJ_DEPTH,0) - (rotate(pacManRot, 0.f, 0.f, 1.f) *
+		if (!ThreeD) {
+
+				eye = center - cameraDistance * cameraForward;
+				view = lookAt(vec3(eye), vec3(center), vec3(cameraUp));
+
+				detectPellets("pacman", pacManXPos, pacManYPos);
+				detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
+				gameOver("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
+				gameOver("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos);
+				gameOver("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos);
+				gameOver("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos);
+				ghostAI("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos, ghost1CurDir, ghost1NextDir);
+				ghostAI("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos, ghost2CurDir, ghost2NextDir);
+				ghostAI("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos, ghost3CurDir, ghost3NextDir);
+				ghostAI("pacman", "ghost4", pacManXPos, pacManYPos, ghost4XPos, ghost4YPos, ghost4CurDir, ghost4NextDir);
+
+
+				glm::vec4 lightPos = glm::rotate(rotation, 0.0f, 0.0f, 1.0f) * lightPosition;
+				shader.Activate(); // Bind shader.
+				shader.SetUniform("lightPosition", view * lightPos);
+				shader.SetUniform("lightDiffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				shader.SetUniform("lightSpecular", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				shader.SetUniform("lightAmbient", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				shader.SetUniform("cuttoffAngle", 30.0f);
+
+				shader.SetUniform("spotlightPosition", spotlightPosition);
+				shader.SetUniform("spotlightDirection", glm::vec4(0.0, 1.0, 0.0, 0.0));
+				shader.SetUniform("spotlightDiffuse", glm::vec4(1.0, 1.0, 1.0, 1.0));
+				shader.SetUniform("spotlightSpecular", glm::vec4(1.0, 1.0, 1.0, 1.0));
+				shader.SetUniform("spotlightAmbient", glm::vec4(1.0, 1.0, 1.0, 1.0));
+				shader.SetUniform("cuttoffAngle", 40.0f);
+
+
+
+				pacMan->setOverrideDiffuseMaterial(glm::vec4(1.0, 1.0, 0.0, 1.0));
+				pacMan->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+				pacMan->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+				pacMan->setOverrideSpecularShininessMaterial(90.0f);
+				pacMan->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+				pacMan->render(view * translate(pelletLoc3[5]) * rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection);
+
+				redGhost->render(view * translate(pelletLoc3[1]) * rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
+				cyanGhost->render(view * translate(pelletLoc3[3]) * rotate(ghost2Rot, 0.0f, 0.0f, 1.0f), projection);
+				orangeGhost->render(view * translate(pelletLoc3[7]) * rotate(ghost3Rot, 0.0f, 0.0f, 1.0f), projection);
+				pinkGhost->render(view * translate(pelletLoc3[9]) * rotate(ghost4Rot, 0.0f, 0.0f, 1.0f), projection);
+
+
+				maze0->setOverrideDiffuseMaterial(glm::vec4(0.0, 0.0, 1.0, 1.0));
+				maze0->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+				maze0->setOverrideSpecularMaterial(glm::vec4(1.0, 1.0, 1.0, 1.0));
+				maze0->setOverrideSpecularShininessMaterial(90.0f);
+				maze0->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
+				maze0->render(view * translate(mazePos), projection);
+
+				if (renderPellets[1] == 0)
+					sphere1->render(view * translate(pelletLoc3[1]) * scale(0.5f, 0.5f, 0.5f), projection);
+				if (renderPellets[2] == 0)
+					sphere2->render(view * translate(pelletLoc3[2]) * scale(0.5f, 0.5f, 0.5f), projection);
+				if (renderPellets[3] == 0)
+					sphere3->render(view * translate(pelletLoc3[3]) * scale(0.5f, 0.5f, 0.5f), projection);
+
+				if (renderPellets[4] == 0)
+					sphere4->render(view * translate(pelletLoc3[4]) * scale(0.5f, 0.5f, 0.5f), projection);
+				if (renderPellets[5] == 0)
+					sphere5->render(view * translate(pelletLoc3[5]) * scale(0.5f, 0.5f, 0.5f), projection);
+				if (renderPellets[6] == 0)
+					sphere6->render(view * translate(pelletLoc3[6]) * scale(0.5f, 0.5f, 0.5f), projection);
+
+				if (renderPellets[7] == 0)
+					sphere7->render(view * translate(pelletLoc3[7]) * scale(0.5f, 0.5f, 0.5f), projection);
+				if (renderPellets[8] == 0)
+					sphere8->render(view * translate(pelletLoc3[8]) * scale(0.5f, 0.5f, 0.5f), projection);
+				if (renderPellets[9] == 0)
+					sphere9->render(view * translate(pelletLoc3[9]) * scale(0.5f, 0.5f, 0.5f), projection);
+
+
+				freezeCharacter("pacman");
+				freezeCharacter("ghost1");
+				freezeCharacter("ghost2");
+				freezeCharacter("ghost3");
+				freezeCharacter("ghost4");
+
+				pacManXPos = 0.0f;
+				pacManYPos = 0.0f;
+				ghost1XPos = -11.3403f;
+				ghost1YPos = 10.1f;
+				ghost2XPos = 11.3403f;
+				ghost2YPos = 10.1f;
+				ghost3XPos = -11.3403f;
+				ghost3YPos = -10.1f;
+				ghost4XPos = 11.3403f;
+				ghost4YPos = -10.1f;
+
+				for (int i = 1; i < NUMPELLETS; i++) {
+					renderPellets[i] = 1;
+				}
+				score = 0;
+
+			}
+		else {
+		view = lookAt(vec3(vec4(pacManXPos, pacManYPos, OBJ_DEPTH, 0) - (rotate(pacManRot, 0.f, 0.f, 1.f) *
 			vec4(-1, 0, 0, 0) * 10) + glm::vec4(0.0f, 0.f, 10, 0.f)), vec3(pacManXPos, pacManYPos, OBJ_DEPTH), vec3(cameraUpThreeD));
-		
+
 
 		glm::vec4 spotModel = glm::vec4(0.0f, 5.0f, OBJ_DEPTH, 0.0f) * glm::rotate(0.0f, 90.0f, 1.0f, 0.0f);
 		rotation += 0.05f; // Update rotation angle if rotation is enabled.
 
 		glm::vec4 lightPos = glm::rotate(rotation, 0.0f, 0.0f, 1.0f) * lightPosition;
-		
+
 		shader.Activate(); // Bind shader.
 		shader.SetUniform("lightPosition", view * lightPos);
 		shader.SetUniform("lightDiffuse", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -869,7 +1130,7 @@ void display(void)
 		shader.SetUniform("spotlightSpecular", glm::vec4(1.0, 1.0, 1.0, 1.0));
 		shader.SetUniform("spotlightAmbient", glm::vec4(1.0, 1.0, 1.0, 1.0));
 		shader.SetUniform("cuttoffAngle", 40.0f);
-	
+
 
 		cylinder->setOverrideDiffuseMaterial(glm::vec4(1.0, 0.0, 0.0, 1.0));
 		cylinder->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
@@ -877,10 +1138,10 @@ void display(void)
 		cylinder->setOverrideSpecularShininessMaterial(90.0f);
 		cylinder->setOverrideEmissiveMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
 		//cylinder->render(glm::translate(0.0f, 5.0f, OBJ_DEPTH), projection);
-		
+
 		detectPellets("pacman", pacManXPos, pacManYPos);
 		detectTurn("pacman", pacManXPos, pacManYPos, pacManCurDir, pacManNextDir);
-		
+
 		gameOver("pacman", "ghost1", pacManXPos, pacManYPos, ghost1XPos, ghost1YPos);
 		gameOver("pacman", "ghost2", pacManXPos, pacManYPos, ghost2XPos, ghost2YPos);
 		gameOver("pacman", "ghost3", pacManXPos, pacManYPos, ghost3XPos, ghost3YPos);
@@ -902,7 +1163,7 @@ void display(void)
 		cyanGhost->render(view * translate(vec3(ghost2XPos, ghost2YPos, OBJ_DEPTH)) * rotate(ghost2Rot, 0.0f, 0.0f, 1.0f), projection);
 		orangeGhost->render(view * translate(vec3(ghost3XPos, ghost3YPos, OBJ_DEPTH)) * rotate(ghost3Rot, 0.0f, 0.0f, 1.0f), projection);
 		pinkGhost->render(view * translate(vec3(ghost4XPos, ghost4YPos, OBJ_DEPTH)) * rotate(ghost4Rot, 0.0f, 0.0f, 1.0f), projection);
-		
+
 
 		maze0->setOverrideDiffuseMaterial(glm::vec4(0.0, 0.0, 1.0, 1.0));
 		maze0->setOverrideAmbientMaterial(glm::vec4(0.0, 0.0, 0.0, 1.0));
@@ -932,78 +1193,114 @@ void display(void)
 		if (renderPellets[9] == 0)
 			sphere9->render(view * translate(pelletLoc3[9]) * scale(0.5f, 0.5f, 0.5f), projection);
 
-		pacManXPos += pacManXSpeed;
-		pacManYPos += pacManYSpeed;
-		ghost1XPos += ghost1XSpeed;
-		ghost1YPos += ghost1YSpeed;
-		ghost2XPos += ghost2XSpeed;
-		ghost2YPos += ghost2YSpeed;
-		ghost3XPos += ghost3XSpeed;
-		ghost3YPos += ghost3YSpeed;
-		ghost4XPos += ghost4XSpeed;
-		ghost4YPos += ghost4YSpeed;
+		freezeCharacter("pacman");
+		freezeCharacter("ghost1");
+		freezeCharacter("ghost2");
+		freezeCharacter("ghost3");
+		freezeCharacter("ghost4");
+
+		pacManXPos = 0.0f;
+		pacManYPos = 0.0f;
+		ghost1XPos = -11.3403f;
+		ghost1YPos = 10.1f;
+		ghost2XPos = 11.3403f;
+		ghost2YPos = 10.1f;
+		ghost3XPos = -11.3403f;
+		ghost3YPos = -10.1f;
+		ghost4XPos = 11.3403f;
+		ghost4YPos = -10.1f;
+
+		for (int i = 1; i < NUMPELLETS; i++) {
+			renderPellets[i] = 1;
+		}
+		score = 0;
+
+
+
+
+	}
+
+
+		glColor3f(0.0, 1.0, 0.0);
+		glRasterPos2f(-0.97f, 0.9f);
+
+		stringstream strs;
+		strs << score;
+		std::string temp = strs.str();
+		char* scr_temp = (char*)temp.c_str();
+		char* string = "SCORE: ";
+		int i = 3;
+		char* c;
+		for (c = string; *c != '\0'; c++) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		}
+		for (c = scr_temp; *c != '\0'; c++) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		}
+
+		glColor3f(1.0, 1.0, 0.0);
+		glRasterPos2f(-0.1f, 0.85f);
+		char* title = "Game Over";
+		if (score == 90) {
+			title = "YOU WIN!!!";
+		}
+		for (c = title; *c != '\0'; c++) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+		}
+		glColor3f(1.0, 1.0, 0.0);
+		glRasterPos2f(-0.17f, 0.75f);
+		char* title2 = "Press 'r' to restart!";
+		for (c = title2; *c != '\0'; c++) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+		}
+
+		//check if ghost touches pacman
+		glColor3f(0.0, 1.0, 0.0);
+		glRasterPos2f(0.7f, 0.9f);
+		stringstream strs1;
+		strs1 << gameOverInt;
+		temp = strs1.str();
+		scr_temp = (char*)temp.c_str();
+		string = "game over: ";
+		i = 5;
+		for (c = string; *c != '\0'; c++) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		}
+		for (c = scr_temp; *c != '\0'; c++) {
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		}
+		//current dist ghost is from pacman
+		glColor3f(0.0, 1.0, 0.0);
+		glRasterPos2f(0.7f, 0.85f);
+		stringstream strs2;
+		strs2 << ghost3NextDir;
+		temp = strs2.str();
+		scr_temp = (char*)temp.c_str();
+		string = "ghost1NextDir: ";
+		i = 5;
+		//for (c = string; *c != '\0'; c++) {
+		//	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		//}
+		//for (c = scr_temp; *c != '\0'; c++) {
+		//	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+		//}
+		glutSwapBuffers(); // Swap the buffers.
+		checkError("display");
+
+		pacMan->render(view* translate(pelletLoc3[5])* rotate(pacManRot, 0.0f, 0.0f, 1.0f), projection);
+
+		redGhost->render(view* translate(pelletLoc3[1])* rotate(ghost1Rot, 0.0f, 0.0f, 1.0f), projection);
+		cyanGhost->render(view* translate(pelletLoc3[3])* rotate(ghost2Rot, 0.0f, 0.0f, 1.0f), projection);
+		orangeGhost->render(view* translate(pelletLoc3[7])* rotate(ghost3Rot, 0.0f, 0.0f, 1.0f), projection);
+		pinkGhost->render(view* translate(pelletLoc3[9])* rotate(ghost4Rot, 0.0f, 0.0f, 1.0f), projection);
+
+		for (int i = 1; i < NUMPELLETS; i++) {
+			renderPellets[i] = 0;
+		}
+		score = 0;
+	}
 
 	
-
-		
-	}
-
-	glColor3f(0.0, 1.0, 0.0);
-	glRasterPos2f(-0.97f, 0.9f);
-
-	stringstream strs;
-	strs << score;
-	std::string temp = strs.str();
-	char* scr_temp = (char*)temp.c_str();
-	char* string = "SCORE: ";
-	int i = 3;
-	char* c;
-	for (c = string; *c != '\0'; c++) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-	}
-	for (c = scr_temp; *c != '\0'; c++) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-	}
-
-	glColor3f(1.0, 1.0, 0.0);
-	glRasterPos2f(-0.1f, 0.85f);
-	char* title = "PAC-MAN";
-	for (c = title; *c != '\0'; c++) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
-	}
-
-	//check if ghost touches pacman
-	glColor3f(0.0, 1.0, 0.0);
-	glRasterPos2f(0.7f, 0.9f);
-	stringstream strs1;
-	strs1 << gameOverInt;
-	temp = strs1.str();
-	scr_temp = (char*)temp.c_str();
-	string = "game over: ";
-	i = 5;
-	for (c = string; *c != '\0'; c++) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-	}
-	for (c = scr_temp; *c != '\0'; c++) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-	}
-	//current dist ghost is from pacman
-	glColor3f(0.0, 1.0, 0.0);
-	glRasterPos2f(0.7f, 0.85f);
-	stringstream strs2;
-	strs2 << ghost3NextDir;
-	temp = strs2.str();
-	scr_temp = (char*)temp.c_str();
-	string = "ghost1NextDir: ";
-	i = 5;
-	for (c = string; *c != '\0'; c++) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-	}
-	for (c = scr_temp; *c != '\0'; c++) {
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-	}
-	glutSwapBuffers(); // Swap the buffers.
-	checkError("display");
 }
 
 /*This gets called when nothing is happening (OFTEN)*/
@@ -1115,6 +1412,11 @@ void keyboard(unsigned char key, int x, int y)
 		}
 		else {
 			ThreeD = 1;
+		}
+		break;
+	case 'r':
+		if (gameOverInt!=0) {
+			gameOverInt--;
 		}
 		break;
 	case 't':
